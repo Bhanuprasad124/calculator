@@ -54,12 +54,12 @@ export function AuthScreen() {
 
     if (mode === 'signup' && result.data.user) {
       if (result.data.session) {
-        const { error: profileError } = await supabase.from('profiles').upsert({
+        const { error: profileError } = await supabase.from('profiles').insert({
           id: result.data.user.id,
           display_name: name.trim(),
         });
         if (profileError) {
-          setError('Your account was created, but we could not save your name. Please try again.');
+          setError('Your account was created, but we could not save your name. Please try signing out and back in.');
         }
       } else {
         setNotice('Your account is ready. Check your email to confirm it, then sign in.');
