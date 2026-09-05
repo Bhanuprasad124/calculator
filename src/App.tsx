@@ -3,6 +3,7 @@ import type { Session } from '@supabase/supabase-js';
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
+  Crown,
   LayoutGrid,
   LogOut,
   Receipt,
@@ -20,9 +21,10 @@ import { formatCurrency, formatDateTime, getInitials } from '@/lib/utils';
 import { AuthScreen } from '@/components/AuthScreen';
 import { EntryFormCard } from '@/components/EntryFormCard';
 import { TransactionTable } from '@/components/TransactionTable';
+import { UsersPage } from '@/components/UsersPage';
 
 type EntryForm = { type: TransactionType; amount: string; details: string };
-type Tab = 'overview' | 'transactions' | 'audit';
+type Tab = 'overview' | 'transactions' | 'audit' | 'users';
 
 const emptyEntry: EntryForm = { type: 'expense', amount: '', details: '' };
 
@@ -47,6 +49,8 @@ export default function App() {
   const [filter, setFilter] = useState<'all' | TransactionType>('all');
   const [auditLoading, setAuditLoading] = useState(false);
   const [auditError, setAuditError] = useState<string | null>(null);
+
+  const isAdmin = profile?.role === 'admin';
 
   const loadWorkspace = useCallback(async (activeSession: Session) => {
     setLoading(true);
@@ -178,6 +182,7 @@ export default function App() {
     { id: 'overview', label: 'Overview', icon: LayoutGrid },
     { id: 'transactions', label: 'Transactions', icon: Receipt },
     { id: 'audit', label: 'Audit Trail', icon: ScrollText },
+    { id: 'users', label: 'Members', icon: Users },
   ];
 
   return (
@@ -196,7 +201,7 @@ export default function App() {
               className="h-10 w-10 rounded-xl object-cover ring-2 ring-[#4f00f5]"
             />
             <div>
-              <h1 className="text-base font-bold tracking-tight sm:text-lg">Chhatrapati Youth</h1>
+              <h1 className="text-base font-bold tracking-tight sm:text-lg">Shivaji Youth</h1>
               <p className="hidden text-xs text-slate-500 sm:block">Team cash movement ledger</p>
             </div>
           </div>
@@ -204,7 +209,10 @@ export default function App() {
             <div className="hidden items-center gap-2 text-right sm:flex">
               <div>
                 <p className="text-sm font-semibold text-slate-800">{memberName}</p>
-                <p className="text-xs text-slate-400">Team member</p>
+                <p className="flex items-center gap-1 text-xs text-slate-400">
+                  {isAdmin && <Crown className="h-3 w-3 text-amber-500" />}
+                  {isAdmin ? 'Admin' : 'Member'}
+                </p>
               </div>
             </div>
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-100 text-xs font-bold text-[#4f00f5]">
@@ -221,7 +229,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Tab navigation */}
         <nav className="mx-auto max-w-4xl px-4 sm:px-6">
           <div className="flex gap-1 overflow-x-auto pb-px">
             {tabs.map(({ id, label, icon: Icon }) => (
@@ -287,6 +294,7 @@ export default function App() {
               onSubmit={handleSubmit}
               submitting={submitting}
               formError={formError}
+              isAdmin={isAdmin}
             />
 
             <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -308,7 +316,7 @@ export default function App() {
               <TransactionTable
                 transactions={transactions}
                 profileNames={profileNames}
-                onDelete={handleDelete}
+                onDelete={isAdmin ? handleDelete : undefined}
                 loading={loading}
                 error={error}
                 emptyMessage="No transactions yet. Add the first team entry above."
@@ -357,7 +365,7 @@ export default function App() {
               <TransactionTable
                 transactions={filteredTransactions}
                 profileNames={profileNames}
-                onDelete={handleDelete}
+                onDelete={isAdmin ? handleDelete : undefined}
                 loading={loading}
                 error={error}
                 emptyMessage={search || filter !== 'all' ? 'No transactions match your filters.' : 'No transactions yet.'}
@@ -431,8 +439,18 @@ export default function App() {
           </div>
         )}
 
+        {/* === USERS TAB === */}
+        {tab === 'users' && (
+          <UsersPage
+            profiles={profiles}
+            currentUserId={session.user.id}
+            isAdmin={isAdmin}
+            onRoleChanged={() => void loadWorkspace(session)}
+          />
+        )}
+
         <p className="mt-8 text-center text-xs text-slate-400">
-          Shared with the Chhatrapati Youth team · Entries are saved automatically
+          Shared with the Shivaji Youth team · Entries are saved automatically
         </p>
       </main>
     </div>

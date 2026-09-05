@@ -83,7 +83,7 @@ export function AuthScreen() {
             alt="Chhatrapati Shivaji Maharaj"
             className="mx-auto mb-4 h-16 w-16 rounded-2xl object-cover shadow-lg ring-2 ring-[#4f00f5]"
           />
-          <h1 className="text-3xl font-bold tracking-tight text-[#172033]">Chhatrapati Youth</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-[#172033]">Shivaji Youth</h1>
           <p className="mt-2 text-sm text-slate-500">Shared cash ledger for the whole team</p>
         </div>
 
@@ -115,8 +115,8 @@ export function AuthScreen() {
             </h2>
             <p className="mt-1 text-sm text-slate-500">
               {mode === 'login'
-                ? 'Sign in to view and record team cash movement.'
-                : 'Create your member account to start recording entries.'}
+                ? 'Sign in to view the team cash ledger.'
+                : 'Create your member account to join the team.'}
             </p>
           </div>
 

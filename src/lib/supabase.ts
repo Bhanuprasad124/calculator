@@ -6,6 +6,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export type TransactionType = 'income' | 'expense';
+export type UserRole = 'admin' | 'member';
 
 export interface Transaction {
   id: string;
@@ -19,6 +20,7 @@ export interface Transaction {
 export interface Profile {
   id: string;
   display_name: string;
+  role: UserRole;
   created_at: string;
 }
 

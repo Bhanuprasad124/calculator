@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react';
-import { ChevronDown, Loader2, Plus, WalletCards } from 'lucide-react';
+import { ChevronDown, Loader2, Lock, Plus, WalletCards } from 'lucide-react';
 import type { TransactionType } from '@/lib/supabase';
 
 type EntryForm = {
@@ -14,9 +14,29 @@ interface EntryFormProps {
   onSubmit: (event: FormEvent) => void;
   submitting: boolean;
   formError: string | null;
+  isAdmin: boolean;
 }
 
-export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError }: EntryFormProps) {
+export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError, isAdmin }: EntryFormProps) {
+  if (!isAdmin) {
+    return (
+      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="mb-3 flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-slate-400">
+            <Lock className="h-5 w-5" />
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-900">Record Cash Movement</h3>
+            <p className="text-xs text-slate-500">Only admins can add or remove entries</p>
+          </div>
+        </div>
+        <p className="rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-500">
+          You have read-only access. Ask an admin to record a cash entry on your behalf, or request admin access from the Users page.
+        </p>
+      </section>
+    );
+  }
+
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
       <div className="mb-5 flex items-center gap-3">
