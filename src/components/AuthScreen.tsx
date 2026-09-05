@@ -44,7 +44,11 @@ export function AuthScreen() {
     const result =
       mode === 'login'
         ? await supabase.auth.signInWithPassword({ email: email.trim(), password })
-        : await supabase.auth.signUp({ email: email.trim(), password });
+        : await supabase.auth.signUp({
+            email: email.trim(),
+            password,
+            options: { data: { name: name.trim() } },
+          });
 
     if (result.error) {
       setError(friendlyAuthError(result.error.message));
@@ -52,19 +56,9 @@ export function AuthScreen() {
       return;
     }
 
-    if (mode === 'signup' && result.data.user) {
-      if (result.data.session) {
-        const { error: profileError } = await supabase.from('profiles').insert({
-          id: result.data.user.id,
-          display_name: name.trim(),
-        });
-        if (profileError) {
-          setError('Your account was created, but we could not save your name. Please try signing out and back in.');
-        }
-      } else {
-        setNotice('Your account is ready. Check your email to confirm it, then sign in.');
-        setMode('login');
-      }
+    if (mode === 'signup' && result.data.user && !result.data.session) {
+      setNotice('Your account is ready. Check your email to confirm it, then sign in.');
+      setMode('login');
     }
     setBusy(false);
   };
