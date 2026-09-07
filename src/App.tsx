@@ -20,6 +20,7 @@ import {
 } from '@/lib/supabase';
 import { formatCurrency, formatDateTime, getInitials } from '@/lib/utils';
 import { AuthScreen } from '@/components/AuthScreen';
+import { CompleteSetup } from '@/components/CompleteSetup';
 import { EntryFormCard } from '@/components/EntryFormCard';
 import { TransactionTable } from '@/components/TransactionTable';
 import { UsersPage } from '@/components/UsersPage';
@@ -51,11 +52,14 @@ export default function App() {
   const [filter, setFilter] = useState<'all' | TransactionType>('all');
   const [auditLoading, setAuditLoading] = useState(false);
   const [auditError, setAuditError] = useState<string | null>(null);
+  const [needsSetup, setNeedsSetup] = useState(false);
+  const [setupChecked, setSetupChecked] = useState(false);
 
   const isAdmin = profile?.role === 'admin';
 
   const loadWorkspace = useCallback(async (activeSession: Session) => {
     setLoading(true);
+    setSetupChecked(false);
     const [profileRes, profilesRes, txRes, invitesRes] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', activeSession.user.id).maybeSingle(),
       supabase.from('profiles').select('*').order('display_name'),
@@ -68,6 +72,13 @@ export default function App() {
     if (invitesRes.data) setInvites(invitesRes.data as Invite[]);
     if (txRes.error) setError('Could not load the team ledger. Please refresh and try again.');
     else setTransactions((txRes.data ?? []) as Transaction[]);
+
+    const prof = profileRes.data as Profile | null;
+    const invitedViaEmail = activeSession.user.app_metadata?.['invitation_token'] !== undefined
+      || activeSession.user.user_metadata?.['inviter_name'] !== undefined;
+    const hasNoName = !prof || !prof.display_name || prof.display_name === activeSession.user.email;
+    setNeedsSetup(invitedViaEmail && hasNoName);
+    setSetupChecked(true);
     setLoading(false);
   }, []);
 
@@ -88,18 +99,23 @@ export default function App() {
     supabase.auth.getSession().then(({ data }) => {
       if (!mounted) return;
       setSession(data.session);
-      if (data.session) void loadWorkspace(data.session);
-      else setLoading(false);
+      if (data.session) {
+        setTab('overview');
+        void loadWorkspace(data.session);
+      } else setLoading(false);
     });
     const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
-      if (nextSession) void loadWorkspace(nextSession);
-      else {
+      if (nextSession) {
+        setTab('overview');
+        void loadWorkspace(nextSession);
+      } else {
         setProfile(null);
         setProfiles([]);
         setInvites([]);
         setTransactions([]);
         setAuditLog([]);
+        setTab('overview');
       }
     });
     return () => {
@@ -180,6 +196,30 @@ export default function App() {
   };
 
   if (!session) return <AuthScreen />;
+
+  if (
+    needsSetup &&
+    session &&
+    (!profile || !profile.display_name || profile.display_name === session.user.email)
+  ) {
+    return (
+      <CompleteSetup
+        email={session.user.email ?? ''}
+        onDone={() => {
+          setNeedsSetup(false);
+          if (session) void loadWorkspace(session);
+        }}
+      />
+    );
+  }
+
+  if (!setupChecked) {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-slate-400">
+        Loading...
+      </div>
+    );
+  }
 
   const memberName = profile?.display_name || session.user.email?.split('@')[0] || 'Team member';
 

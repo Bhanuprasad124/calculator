@@ -99,12 +99,32 @@ Deno.serve(async (req: Request) => {
 
     const siteUrl = Deno.env.get("SITE_URL") || "";
 
+    const { error: emailError } = await supabaseAdmin.auth.admin.inviteUserByEmail(
+      normalizedEmail,
+      {
+        redirectTo: siteUrl,
+        data: {
+          inviter_name: profile.display_name,
+        },
+      },
+    );
+
+    if (emailError) {
+      return new Response(
+        JSON.stringify({
+          success: true,
+          warning: "Invite created but the email could not be sent automatically. Share the signup link manually.",
+          email: normalizedEmail,
+        }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     return new Response(
       JSON.stringify({
         success: true,
         email: normalizedEmail,
-        signupUrl: siteUrl,
-        inviterName: profile.display_name,
+        message: `Invitation email sent to ${normalizedEmail}`,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
