@@ -13,6 +13,7 @@ import {
 import {
   supabase,
   type AuditEntry,
+  type Invite,
   type Profile,
   type Transaction,
   type TransactionType,
@@ -37,6 +38,7 @@ export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [invites, setInvites] = useState<Invite[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [auditLog, setAuditLog] = useState<AuditEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,14 +56,16 @@ export default function App() {
 
   const loadWorkspace = useCallback(async (activeSession: Session) => {
     setLoading(true);
-    const [profileRes, profilesRes, txRes] = await Promise.all([
+    const [profileRes, profilesRes, txRes, invitesRes] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', activeSession.user.id).maybeSingle(),
       supabase.from('profiles').select('*').order('display_name'),
       supabase.from('transactions').select('*').order('created_at', { ascending: false }),
+      supabase.from('invites').select('*').order('created_at', { ascending: false }),
     ]);
 
     if (profileRes.data) setProfile(profileRes.data as Profile);
     if (profilesRes.data) setProfiles(profilesRes.data as Profile[]);
+    if (invitesRes.data) setInvites(invitesRes.data as Invite[]);
     if (txRes.error) setError('Could not load the team ledger. Please refresh and try again.');
     else setTransactions((txRes.data ?? []) as Transaction[]);
     setLoading(false);
@@ -93,6 +97,7 @@ export default function App() {
       else {
         setProfile(null);
         setProfiles([]);
+        setInvites([]);
         setTransactions([]);
         setAuditLog([]);
       }
@@ -443,9 +448,11 @@ export default function App() {
         {tab === 'users' && (
           <UsersPage
             profiles={profiles}
+            invites={invites}
             currentUserId={session.user.id}
             isAdmin={isAdmin}
             onRoleChanged={() => void loadWorkspace(session)}
+            onInvitesChanged={() => void loadWorkspace(session)}
           />
         )}
 

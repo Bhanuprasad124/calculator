@@ -24,6 +24,13 @@ export interface Profile {
   created_at: string;
 }
 
+export interface Invite {
+  id: string;
+  email: string;
+  invited_by: string;
+  created_at: string;
+}
+
 export interface AuditEntry {
   id: string;
   action: string;

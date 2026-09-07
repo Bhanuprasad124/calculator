@@ -41,6 +41,19 @@ export function AuthScreen() {
     }
 
     setBusy(true);
+    if (mode === 'signup') {
+      const { data: inviteData } = await supabase
+        .from('invites')
+        .select('id')
+        .eq('email', email.trim().toLowerCase())
+        .maybeSingle();
+      if (!inviteData) {
+        setError('This email has not been invited. Ask a team admin to invite you first.');
+        setBusy(false);
+        return;
+      }
+    }
+
     const result =
       mode === 'login'
         ? await supabase.auth.signInWithPassword({ email: email.trim(), password })
@@ -51,7 +64,12 @@ export function AuthScreen() {
           });
 
     if (result.error) {
-      setError(friendlyAuthError(result.error.message));
+      const msg = result.error.message.toLowerCase();
+      if (msg.includes('not on the team invite list') || msg.includes('invite')) {
+        setError('This email has not been invited. Ask a team admin to invite you first.');
+      } else {
+        setError(friendlyAuthError(result.error.message));
+      }
       setBusy(false);
       return;
     }
@@ -78,7 +96,7 @@ export function AuthScreen() {
             className="mx-auto mb-4 h-16 w-16 rounded-2xl object-cover shadow-lg ring-2 ring-[#4f00f5]"
           />
           <h1 className="text-3xl font-bold tracking-tight text-[#172033]">Shivaji Youth</h1>
-          <p className="mt-2 text-sm text-slate-500">Shared cash ledger for the whole team</p>
+          <p className="mt-2 text-sm text-slate-500">Shared cash ledger · Invite-only</p>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_14px_45px_rgba(35,42,65,0.08)] sm:p-8">
@@ -110,7 +128,7 @@ export function AuthScreen() {
             <p className="mt-1 text-sm text-slate-500">
               {mode === 'login'
                 ? 'Sign in to view the team cash ledger.'
-                : 'Create your member account to join the team.'}
+                : 'You need a team invite to create an account. Enter the email your admin invited.'}
             </p>
           </div>
 
@@ -161,7 +179,7 @@ export function AuthScreen() {
 
         <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-xs text-slate-400">
           <ShieldCheck className="h-3.5 w-3.5" />
-          Only signed-in team members can access the ledger
+          Invite-only · Only approved team members can join
         </p>
       </div>
     </main>
