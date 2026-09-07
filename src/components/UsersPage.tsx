@@ -68,10 +68,9 @@ export function UsersPage({ profiles, invites, currentUserId, isAdmin, onRoleCha
         return;
       }
       setInviteEmail('');
+      const link = result.signupUrl || window.location.origin;
       setInviteSuccess(
-        result.warning
-          ? `${trimmed} has been invited, but the email could not be sent automatically. Share the signup link with them directly.`
-          : `Invitation email sent to ${trimmed}. They can follow the link in the email to create their account.`,
+        `${trimmed} can now sign up. Tell them to go to ${link}, switch to "Create account", and sign up using that exact email.`,
       );
       onInvitesChanged();
     } catch {
@@ -114,7 +113,7 @@ export function UsersPage({ profiles, invites, currentUserId, isAdmin, onRoleCha
             </div>
             <div>
               <h3 className="font-bold text-slate-900">Invite a Team Member</h3>
-              <p className="text-xs text-slate-500">They'll receive an email with a link to create their account</p>
+              <p className="text-xs text-slate-500">Add their email so they can go to the site and create their own account</p>
             </div>
           </div>
 

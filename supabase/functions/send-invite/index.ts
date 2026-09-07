@@ -97,30 +97,15 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const siteUrl = Deno.env.get("SITE_URL") || "https://bolt.new";
-
-    const { error: inviteEmailError } = await supabaseAdmin.auth.admin.inviteUserByEmail(
-      normalizedEmail,
-      {
-        redirectTo: siteUrl,
-        data: {
-          inviter_name: profile.display_name,
-        },
-      },
-    );
-
-    if (inviteEmailError) {
-      return new Response(
-        JSON.stringify({
-          success: true,
-          warning: "Invite created but the email could not be sent. Share the signup link manually.",
-        }),
-        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
-    }
+    const siteUrl = Deno.env.get("SITE_URL") || "";
 
     return new Response(
-      JSON.stringify({ success: true, message: `Invitation email sent to ${normalizedEmail}` }),
+      JSON.stringify({
+        success: true,
+        email: normalizedEmail,
+        signupUrl: siteUrl,
+        inviterName: profile.display_name,
+      }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (err) {
