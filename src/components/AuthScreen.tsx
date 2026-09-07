@@ -42,12 +42,10 @@ export function AuthScreen() {
 
     setBusy(true);
     if (mode === 'signup') {
-      const { data: inviteData } = await supabase
-        .from('invites')
-        .select('id')
-        .eq('email', email.trim().toLowerCase())
-        .maybeSingle();
-      if (!inviteData) {
+      const { data: isInvited } = await supabase.rpc('is_email_invited', {
+        p_email: email.trim().toLowerCase(),
+      });
+      if (!isInvited) {
         setError('This email has not been invited. Ask a team admin to invite you first.');
         setBusy(false);
         return;

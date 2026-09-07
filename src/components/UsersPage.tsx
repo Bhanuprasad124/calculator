@@ -44,24 +44,40 @@ export function UsersPage({ profiles, invites, currentUserId, isAdmin, onRoleCha
       setInviteError('Please enter a valid email address.');
       return;
     }
-    const existing = profiles.some((p) => false);
     if (invites.some((inv) => inv.email === trimmed)) {
       setInviteError('This email has already been invited.');
       return;
     }
     setInviteBusy(true);
-    const { error: insertError } = await supabase.from('invites').insert({
-      email: trimmed,
-      invited_by: currentUserId,
-    });
-    setInviteBusy(false);
-    if (insertError) {
-      setInviteError('Could not send the invite. Please try again.');
-      return;
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-invite`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          },
+          body: JSON.stringify({ email: trimmed }),
+        },
+      );
+      const result = await response.json();
+      if (!response.ok) {
+        setInviteError(result.error || 'Could not send the invite. Please try again.');
+        setInviteBusy(false);
+        return;
+      }
+      setInviteEmail('');
+      setInviteSuccess(
+        result.warning
+          ? `${trimmed} has been invited, but the email could not be sent automatically. Share the signup link with them directly.`
+          : `Invitation email sent to ${trimmed}. They can follow the link in the email to create their account.`,
+      );
+      onInvitesChanged();
+    } catch {
+      setInviteError('Could not reach the invite service. Please try again.');
     }
-    setInviteEmail('');
-    setInviteSuccess(`${trimmed} can now sign up with this email.`);
-    onInvitesChanged();
+    setInviteBusy(false);
   };
 
   const handleRevokeInvite = async (inviteId: string) => {
@@ -98,7 +114,7 @@ export function UsersPage({ profiles, invites, currentUserId, isAdmin, onRoleCha
             </div>
             <div>
               <h3 className="font-bold text-slate-900">Invite a Team Member</h3>
-              <p className="text-xs text-slate-500">Add their email so they can create an account</p>
+              <p className="text-xs text-slate-500">They'll receive an email with a link to create their account</p>
             </div>
           </div>
 
@@ -119,7 +135,7 @@ export function UsersPage({ profiles, invites, currentUserId, isAdmin, onRoleCha
               className="flex h-[42px] items-center justify-center gap-2 rounded-lg bg-emerald-600 px-6 text-sm font-bold text-white shadow-md shadow-emerald-200 transition hover:bg-emerald-700 disabled:opacity-60"
             >
               <MailPlus className="h-4 w-4" />
-              {inviteBusy ? 'Adding...' : 'Add Invite'}
+              {inviteBusy ? 'Sending...' : 'Send Invite'}
             </button>
           </form>
 
@@ -133,7 +149,6 @@ export function UsersPage({ profiles, invites, currentUserId, isAdmin, onRoleCha
               </p>
               <div className="space-y-2">
                 {invites.map((inv) => {
-                  const isPending = !profiles.some((p) => false);
                   return (
                     <div key={inv.id} className="flex items-center gap-3 rounded-lg bg-slate-50 px-4 py-2.5">
                       <Mail className="h-4 w-4 shrink-0 text-slate-400" />
