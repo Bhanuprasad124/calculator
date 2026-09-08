@@ -29,55 +29,71 @@ select {
 @layer components {
   .brand-title {
     font-family: 'Cinzel', 'Playfair Display', Georgia, 'Times New Roman', serif;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
   }
 
-  /* === Page atmosphere === */
+  /* === Page atmosphere (matches reference mockup) === */
   .page-temple-bg {
     @apply fixed inset-0 h-full w-full object-cover;
-    opacity: 0.88;
+    opacity: 0.9;
   }
 
   .page-vignette {
     @apply pointer-events-none fixed inset-0;
-    background: radial-gradient(circle at center, transparent 40%, rgba(20, 10, 5, 0.4) 100%);
+    background: radial-gradient(circle at center, transparent 38%, rgba(20, 10, 5, 0.42) 100%);
   }
 
   .page-ganesha-center {
-    @apply pointer-events-none fixed left-1/2 top-[42%] h-[min(68vh,560px)] w-[min(72vw,480px)] -translate-x-1/2 -translate-y-1/2 object-contain;
-    opacity: 0.82;
-    mask-image: radial-gradient(ellipse 72% 68% at 50% 48%, black 25%, transparent 78%);
+    @apply pointer-events-none fixed left-1/2 top-[46%] w-[min(78vw,520px)] -translate-x-1/2 -translate-y-1/2 object-contain;
+    height: min(72vh, 580px);
+    opacity: 0.92;
+    filter: saturate(1.08) brightness(1.02);
+    mask-image: radial-gradient(ellipse 75% 72% at 50% 48%, black 35%, transparent 82%);
+  }
+
+  .page-mandala-corner {
+    @apply pointer-events-none fixed h-28 w-28 opacity-[0.22] sm:h-36 sm:w-36;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1'%3E%3Ccircle cx='60' cy='60' r='48'/%3E%3Ccircle cx='60' cy='60' r='32'/%3E%3Cpath d='M60 12 L64 28 L80 28 L68 38 L72 54 L60 46 L48 54 L52 38 L40 28 L56 28 Z'/%3E%3Cpath d='M60 66 L60 108 M12 60 L48 60 M72 60 L108 60 M28 28 L48 48 M72 48 L92 28 M28 92 L48 72 M72 72 L92 92'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .page-mandala-tl {
+    @apply page-mandala-corner left-2 top-2 sm:left-6 sm:top-6;
+  }
+
+  .page-mandala-tr {
+    @apply page-mandala-corner right-2 top-2 scale-x-[-1] sm:right-6 sm:top-6;
   }
 
   .page-diyas {
-    @apply pointer-events-none fixed bottom-[8%] left-1/2 z-0 h-16 w-48 -translate-x-1/2;
+    @apply pointer-events-none fixed bottom-[6%] left-1/2 z-0 h-20 w-56 -translate-x-1/2;
     background:
-      radial-gradient(ellipse 18px 28px at 28% 85%, rgba(255, 180, 60, 0.9) 0%, rgba(255, 120, 20, 0.5) 35%, transparent 70%),
-      radial-gradient(ellipse 18px 28px at 72% 85%, rgba(255, 180, 60, 0.9) 0%, rgba(255, 120, 20, 0.5) 35%, transparent 70%),
-      radial-gradient(ellipse 10px 6px at 28% 72%, rgba(218, 165, 32, 0.85) 0%, transparent 100%),
-      radial-gradient(ellipse 10px 6px at 72% 72%, rgba(218, 165, 32, 0.85) 0%, transparent 100%);
-    filter: blur(0.3px);
+      radial-gradient(ellipse 22px 34px at 26% 78%, rgba(255, 200, 80, 0.95) 0%, rgba(255, 140, 30, 0.55) 40%, transparent 72%),
+      radial-gradient(ellipse 22px 34px at 74% 78%, rgba(255, 200, 80, 0.95) 0%, rgba(255, 140, 30, 0.55) 40%, transparent 72%),
+      radial-gradient(ellipse 14px 8px at 26% 62%, rgba(205, 155, 45, 0.9) 0%, transparent 100%),
+      radial-gradient(ellipse 14px 8px at 74% 62%, rgba(205, 155, 45, 0.9) 0%, transparent 100%);
   }
 
-  /* === Floating header === */
-  .floating-header {
-    @apply rounded-full border backdrop-blur-md;
+  /* === Header (two-tier glass bars like reference) === */
+  .header-glass {
+    @apply rounded-2xl border backdrop-blur-md;
     background: rgba(255, 248, 238, 0.55);
     border-color: rgba(218, 165, 32, 0.4);
     box-shadow: 0 8px 32px 0 rgba(100, 60, 20, 0.15);
   }
 
   .logo-portrait {
-    @apply h-10 w-10 shrink-0 rounded-full object-cover sm:h-11 sm:w-11;
+    @apply h-11 w-11 shrink-0 rounded-full object-cover sm:h-12 sm:w-12;
     box-shadow:
-      0 0 0 2px rgba(218, 165, 32, 0.65),
-      0 2px 8px rgba(100, 60, 20, 0.2);
+      0 0 0 2px rgba(218, 165, 32, 0.7),
+      0 2px 10px rgba(100, 60, 20, 0.18);
   }
 
   .profile-avatar {
-    @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white;
+    @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white;
     background: linear-gradient(135deg, #e65100, #f4511e);
-    box-shadow: 0 2px 8px rgba(230, 81, 0, 0.3);
+    box-shadow: 0 2px 10px rgba(230, 81, 0, 0.35);
   }
 
   .admin-badge {
@@ -86,33 +102,29 @@ select {
 
   /* === Tabs === */
   .tab-bar {
-    @apply flex gap-1 overflow-x-auto p-1;
+    @apply flex gap-1 overflow-x-auto;
   }
 
   .tab-pill {
-    @apply flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold transition-all duration-200;
+    @apply flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2.5 text-sm font-semibold transition-all duration-200 sm:flex-none sm:px-4;
   }
 
   .tab-pill-active {
     @apply tab-pill text-white;
     background: linear-gradient(135deg, #ea580c, #d97706);
-    box-shadow: 0 4px 14px rgba(230, 81, 0, 0.35);
+    box-shadow: 0 4px 14px rgba(230, 81, 0, 0.38);
   }
 
   .tab-pill-inactive {
-    @apply tab-pill text-temple-tab hover:bg-white/40 hover:text-temple-brown;
+    @apply tab-pill text-temple-tab hover:bg-white/45 hover:text-temple-brown;
   }
 
   /* === Frosted glass cards === */
   .card {
-    @apply relative overflow-hidden rounded-2xl border backdrop-blur-lg transition-shadow duration-300;
+    @apply relative overflow-hidden rounded-2xl border backdrop-blur-lg;
     background: rgba(255, 255, 255, 0.58);
-    border-color: rgba(255, 255, 255, 0.65);
+    border: 1.5px solid rgba(255, 255, 255, 0.65);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  }
-
-  .card:hover {
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.1);
   }
 
   .form-panel {
@@ -122,38 +134,19 @@ select {
   }
 
   .member-count-pill {
-    @apply inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-medium backdrop-blur-md;
-    background: rgba(255, 255, 255, 0.55);
-    border-color: rgba(255, 255, 255, 0.65);
-    color: #7a5230;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-  }
-
-  /* === Stat cards === */
-  .glass-stat {
-    @apply relative overflow-hidden rounded-2xl border p-5 backdrop-blur-lg transition-transform duration-300 hover:-translate-y-0.5;
+    @apply inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-medium backdrop-blur-lg;
     background: rgba(255, 255, 255, 0.58);
-    border-width: 1.5px;
-    border-color: rgba(255, 255, 255, 0.65);
+    border: 1.5px solid rgba(255, 255, 255, 0.65);
+    color: #7a5230;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  /* === Stat cards (clean uniform glass – no side accent bars) === */
+  .glass-stat {
+    @apply relative overflow-hidden rounded-2xl border p-5 backdrop-blur-lg;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1.5px solid rgba(255, 255, 255, 0.65);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  }
-
-  .glass-stat-in {
-    box-shadow:
-      0 10px 25px rgba(0, 0, 0, 0.08),
-      inset 4px 0 0 #6ee7b7;
-  }
-
-  .glass-stat-out {
-    box-shadow:
-      0 10px 25px rgba(0, 0, 0, 0.08),
-      inset 4px 0 0 #fda4af;
-  }
-
-  .glass-stat-balance {
-    box-shadow:
-      0 10px 25px rgba(0, 0, 0, 0.08),
-      inset 4px 0 0 rgba(218, 165, 32, 0.7);
   }
 
   .glass-stat-label {
@@ -174,22 +167,22 @@ select {
 
   .stat-icon-in {
     @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-temple-inflow;
-    background: rgba(110, 231, 183, 0.25);
+    background: rgba(167, 243, 208, 0.55);
   }
 
   .stat-icon-out {
     @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-temple-outflow;
-    background: rgba(253, 164, 175, 0.35);
+    background: rgba(254, 205, 211, 0.55);
   }
 
   .stat-icon-balance {
     @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-temple-muted;
-    background: rgba(218, 165, 32, 0.2);
+    background: rgba(253, 230, 138, 0.45);
   }
 
   .ganesha-badge {
     @apply h-10 w-10 shrink-0 rounded-full object-cover;
-    box-shadow: 0 0 0 2px rgba(218, 165, 32, 0.5);
+    box-shadow: 0 0 0 2px rgba(218, 165, 32, 0.55);
   }
 
   /* === Typography === */
@@ -202,11 +195,11 @@ select {
   }
 
   .text-muted {
-    @apply text-temple-muted/75;
+    @apply text-temple-muted/80;
   }
 
   .section-eyebrow {
-    @apply inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-brand-saffron-700;
+    @apply inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-brand-saffron-700;
   }
 
   .section-eyebrow::before {
@@ -215,33 +208,33 @@ select {
   }
 
   .ornament-line {
-    @apply flex items-center gap-3 text-brand-saffron-400/70;
+    @apply flex items-center gap-3 text-brand-saffron-400/80;
   }
 
   .ornament-line::before,
   .ornament-line::after {
     content: '';
-    @apply h-px flex-1 bg-gradient-to-r from-transparent via-brand-saffron-300/60 to-transparent;
+    @apply h-px flex-1 bg-gradient-to-r from-transparent via-brand-saffron-300/70 to-transparent;
   }
 
   /* === Form controls === */
   .input-field {
-    @apply mt-1.5 w-full rounded-xl border border-stone-200/80 bg-white px-3.5 py-2.5 text-temple-brown shadow-input outline-none transition placeholder:text-stone-400;
+    @apply mt-1.5 w-full rounded-xl border border-stone-200 bg-white px-3.5 py-2.5 text-temple-brown shadow-input outline-none transition placeholder:text-stone-400;
   }
 
   .input-field:focus {
-    @apply border-brand-saffron-400 ring-2 ring-brand-saffron-400/25;
+    @apply border-brand-saffron-400 ring-2 ring-brand-saffron-400/20;
   }
 
   .btn-primary {
     @apply relative flex items-center justify-center gap-2 overflow-hidden rounded-full px-6 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-60;
     background: linear-gradient(135deg, #e65100, #f4511e);
-    box-shadow: 0 4px 16px rgba(230, 81, 0, 0.35);
+    box-shadow: 0 4px 16px rgba(230, 81, 0, 0.38);
   }
 
   .btn-primary:hover:not(:disabled) {
     background: linear-gradient(135deg, #f4511e, #ff7043);
-    box-shadow: 0 6px 20px rgba(230, 81, 0, 0.45);
+    box-shadow: 0 6px 22px rgba(230, 81, 0, 0.48);
   }
 
   .btn-primary-lg {
@@ -249,15 +242,15 @@ select {
   }
 
   .btn-ghost {
-    @apply rounded-full p-2 text-temple-muted transition hover:bg-white/50 hover:text-temple-brown;
+    @apply rounded-full p-2 text-temple-muted transition hover:bg-white/55 hover:text-temple-brown;
   }
 
   /* === Chips & badges === */
   .avatar-badge,
   .member-chip {
     @apply inline-flex items-center justify-center rounded-full text-xs font-semibold text-temple-brown;
-    background: rgba(255, 248, 238, 0.8);
-    box-shadow: inset 0 0 0 1px rgba(218, 165, 32, 0.35);
+    background: rgba(255, 248, 238, 0.85);
+    box-shadow: inset 0 0 0 1px rgba(218, 165, 32, 0.3);
   }
 
   .avatar-badge {
@@ -269,19 +262,19 @@ select {
   }
 
   .filter-pill-active {
-    @apply rounded-full border border-brand-saffron-500 px-4 py-2.5 text-sm font-semibold text-white;
+    @apply rounded-full px-4 py-2.5 text-sm font-semibold text-white;
     background: linear-gradient(135deg, #ea580c, #d97706);
-    box-shadow: 0 4px 12px rgba(230, 81, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(230, 81, 0, 0.32);
   }
 
   .filter-pill-inactive {
-    @apply rounded-full border border-white/70 bg-white/50 px-4 py-2.5 text-sm font-semibold text-temple-tab transition hover:bg-white/70 hover:text-temple-brown;
+    @apply rounded-full border border-white/70 bg-white/55 px-4 py-2.5 text-sm font-semibold text-temple-tab transition hover:bg-white/75 hover:text-temple-brown;
   }
 
   /* === Tables === */
   .table-shell thead {
     @apply text-[11px] uppercase tracking-wider text-temple-muted;
-    background: rgba(255, 248, 238, 0.5);
+    background: rgba(255, 248, 238, 0.55);
   }
 
   .table-shell th {
@@ -289,27 +282,21 @@ select {
   }
 
   .table-shell tbody {
-    @apply divide-y divide-stone-200/50;
+    @apply divide-y divide-stone-200/45;
   }
 
   .table-shell tr {
-    @apply transition hover:bg-white/40;
+    @apply transition hover:bg-white/45;
   }
 
   .table-shell td {
     @apply px-5 py-4 text-temple-brown;
   }
 
-  .icon-circle-saffron {
-    @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-full;
-    background: rgba(255, 248, 238, 0.9);
-    box-shadow: 0 0 0 2px rgba(218, 165, 32, 0.45);
-  }
-
   .alert-error {
     @apply rounded-xl px-4 py-3 text-sm text-temple-outflow;
     background: rgba(197, 22, 45, 0.08);
-    box-shadow: inset 0 0 0 1px rgba(197, 22, 45, 0.2);
+    box-shadow: inset 0 0 0 1px rgba(197, 22, 45, 0.18);
   }
 
   .alert-success {
@@ -318,8 +305,8 @@ select {
 
   .alert-info {
     @apply rounded-xl px-4 py-3 text-sm text-temple-muted;
-    background: rgba(255, 248, 238, 0.7);
-    box-shadow: inset 0 0 0 1px rgba(218, 165, 32, 0.25);
+    background: rgba(255, 248, 238, 0.75);
+    box-shadow: inset 0 0 0 1px rgba(218, 165, 32, 0.22);
   }
 
   .logo-frame {

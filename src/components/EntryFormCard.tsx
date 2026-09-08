@@ -58,8 +58,8 @@ export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError
                 onChange={(e) => setEntry((p) => ({ ...p, type: e.target.value as TransactionType }))}
                 className="input-field mt-0 appearance-none pr-10"
               >
-                <option value="expense">Amount Spent (Out)</option>
-                <option value="income">Amount Received (In)</option>
+                <option value="expense">Amount Spent</option>
+                <option value="income">Amount Received</option>
               </select>
               <ChevronDown className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-temple-muted" />
             </div>

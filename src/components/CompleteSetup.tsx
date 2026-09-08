@@ -67,6 +67,8 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
         <img src={TEMPLE_BG} alt="" className="page-temple-bg" />
         <div className="page-vignette" />
         <img src={GANPATI_CENTER} alt="" className="page-ganesha-center" />
+        <div className="page-mandala-tl" aria-hidden="true" />
+        <div className="page-mandala-tr" aria-hidden="true" />
         <div className="page-diyas" aria-hidden="true" />
       </div>
 

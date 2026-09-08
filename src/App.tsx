@@ -3,11 +3,11 @@ import type { Session } from '@supabase/supabase-js';
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
-  Crown,
   LayoutGrid,
   LogOut,
   Receipt,
   ScrollText,
+  Star,
   Users,
 } from 'lucide-react';
 import {
@@ -239,63 +239,33 @@ export default function App() {
         <img src={TEMPLE_BG} alt="" className="page-temple-bg" />
         <div className="page-vignette" />
         <img src={GANPATI_CENTER} alt="" className="page-ganesha-center" />
+        <div className="page-mandala-tl" aria-hidden="true" />
+        <div className="page-mandala-tr" aria-hidden="true" />
         <div className="page-diyas" aria-hidden="true" />
       </div>
 
-      <div className="sticky top-0 z-30 px-3 pt-3 sm:px-4">
-        <header className="floating-header mx-auto max-w-5xl px-3 py-2.5 sm:px-4 sm:py-3">
-          <div className="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:gap-4">
-            <div className="flex items-center justify-between gap-3 lg:justify-start">
-              <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-                <img
-                  src={SHIVAJI_IMG}
-                  alt="Chhatrapati Shivaji Maharaj"
-                  className="logo-portrait"
-                />
-                <div className="min-w-0">
-                  <h1 className="brand-title truncate text-sm font-bold text-temple-brown sm:text-base">
-                    Shivaji Youth
-                  </h1>
-                  <p className="truncate text-[11px] text-temple-muted sm:text-xs">
-                    Team cash movement ledger
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 lg:hidden">
-                <div className="profile-avatar">{getInitials(memberName)}</div>
-                <button
-                  type="button"
-                  onClick={() => void supabase.auth.signOut()}
-                  aria-label="Sign out"
-                  className="btn-ghost"
-                >
-                  <LogOut className="h-4 w-4" />
-                </button>
+      <div className="sticky top-0 z-30 px-4 pt-3">
+        <div className="mx-auto max-w-4xl space-y-2">
+          <header className="header-glass flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
+            <div className="flex min-w-0 items-center gap-3">
+              <img
+                src={SHIVAJI_IMG}
+                alt="Chhatrapati Shivaji Maharaj"
+                className="logo-portrait"
+              />
+              <div className="min-w-0">
+                <h1 className="brand-title truncate text-base font-bold text-temple-brown sm:text-lg">
+                  Shivaji Youth
+                </h1>
+                <p className="truncate text-xs text-temple-muted">Team cash movement ledger</p>
               </div>
             </div>
 
-            <nav className="tab-bar flex-1 lg:justify-center">
-              {tabs.map(({ id, label, icon: Icon }) => (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => setTab(id)}
-                  className={tab === id ? 'tab-pill-active' : 'tab-pill-inactive'}
-                >
-                  <Icon className="h-4 w-4" />
-                  <span className="hidden sm:inline">{label}</span>
-                  <span className="sm:hidden">{id === 'overview' ? 'Overview' : id === 'transactions' ? 'Txns' : id === 'audit' ? 'Audit' : 'Team'}</span>
-                </button>
-              ))}
-            </nav>
-
-            <div className="hidden items-center gap-2.5 lg:flex">
-              <div className="text-right">
-                <p className="max-w-[120px] truncate text-sm font-semibold text-temple-brown">
-                  {memberName}
-                </p>
+            <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+              <div className="hidden text-right sm:block">
+                <p className="text-sm font-semibold text-temple-brown">{memberName}</p>
                 <p className="admin-badge justify-end">
-                  {isAdmin && <Crown className="h-3 w-3 text-brand-gold-500" />}
+                  {isAdmin && <Star className="h-3 w-3 fill-brand-gold-400 text-brand-gold-500" />}
                   {isAdmin ? 'Admin' : 'Member'}
                 </p>
               </div>
@@ -309,8 +279,24 @@ export default function App() {
                 <LogOut className="h-4 w-4" />
               </button>
             </div>
-          </div>
-        </header>
+          </header>
+
+          <nav className="header-glass px-2 py-1.5 sm:px-3">
+            <div className="tab-bar">
+              {tabs.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setTab(id)}
+                  className={tab === id ? 'tab-pill-active' : 'tab-pill-inactive'}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  {label}
+                </button>
+              ))}
+            </div>
+          </nav>
+        </div>
       </div>
 
       <main className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8">
@@ -328,13 +314,13 @@ export default function App() {
                 </div>
               </div>
               <div className="member-count-pill shrink-0">
-                <span aria-hidden="true">👥</span>
+                <Users className="h-4 w-4 text-temple-muted" />
                 {profiles.length || 1} member{profiles.length === 1 ? '' : 's'}
               </div>
             </div>
 
             <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="glass-stat glass-stat-in">
+              <div className="glass-stat">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="glass-stat-label">Total In</p>
@@ -345,7 +331,7 @@ export default function App() {
                   </div>
                 </div>
               </div>
-              <div className="glass-stat glass-stat-out">
+              <div className="glass-stat">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="glass-stat-label">Total Out</p>
@@ -356,7 +342,7 @@ export default function App() {
                   </div>
                 </div>
               </div>
-              <div className="glass-stat glass-stat-balance">
+              <div className="glass-stat">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="glass-stat-label">Net Balance</p>
