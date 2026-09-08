@@ -74,8 +74,7 @@ export default function App() {
     else setTransactions((txRes.data ?? []) as Transaction[]);
 
     const prof = profileRes.data as Profile | null;
-    const invitedViaEmail = activeSession.user.app_metadata?.['invitation_token'] !== undefined
-      || activeSession.user.user_metadata?.['inviter_name'] !== undefined;
+    const invitedViaEmail = activeSession.user.user_metadata?.['inviter_name'] !== undefined;
     const hasNoName = !prof || !prof.display_name || prof.display_name === activeSession.user.email;
     setNeedsSetup(invitedViaEmail && hasNoName);
     setSetupChecked(true);
