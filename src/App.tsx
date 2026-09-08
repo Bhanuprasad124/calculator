@@ -240,9 +240,10 @@ export default function App() {
         <div className="page-backdrop" />
       </div>
 
-      <div className="fixed inset-x-0 top-0 z-20 h-1 bg-gradient-to-r from-brand-saffron-600 via-brand-gold-500 to-brand-maroon-700" />
+      <div className="sticky top-0 z-30">
+        <div className="h-1 bg-gradient-to-r from-brand-saffron-600 via-brand-gold-500 to-brand-maroon-700" />
 
-      <header className="border-b border-orange-200/60 bg-white/95 shadow-sm backdrop-blur-md">
+        <header className="border-b border-orange-200/60 bg-white/95 shadow-sm backdrop-blur-md">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex items-center gap-3">
             <img
@@ -298,7 +299,8 @@ export default function App() {
             ))}
           </div>
         </nav>
-      </header>
+        </header>
+      </div>
 
       <main className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8">
         {/* === OVERVIEW TAB === */}
