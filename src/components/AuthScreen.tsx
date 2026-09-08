@@ -1,15 +1,10 @@
 import { useState, type FormEvent } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { GANPATI_BG, SHIVAJI_IMG } from '@/lib/theme';
 import { friendlyAuthError } from '@/lib/utils';
 
 type AuthMode = 'login' | 'signup';
-
-const SHIVAJI_IMG =
-  'https://images.pexels.com/photos/38876932/pexels-photo-38876932.jpeg?auto=compress&cs=tinysrgb&h=160&w=160';
-
-const GANPATI_BG =
-  'https://images.pexels.com/photos/28288479/pexels-photo-28288479.jpeg?auto=compress&cs=tinysrgb&h=1080&w=1920';
 
 export function AuthScreen() {
   const [mode, setMode] = useState<AuthMode>('login');
@@ -83,7 +78,7 @@ export function AuthScreen() {
     <main className="relative flex min-h-screen items-center justify-center px-4 py-10">
       <div className="fixed inset-0 -z-10">
         <img src={GANPATI_BG} alt="" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-slate-50/85 backdrop-blur-sm" />
+        <div className="page-backdrop" />
       </div>
 
       <div className="w-full max-w-md">
@@ -91,19 +86,19 @@ export function AuthScreen() {
           <img
             src={SHIVAJI_IMG}
             alt="Chhatrapati Shivaji Maharaj"
-            className="mx-auto mb-4 h-16 w-16 rounded-2xl object-cover shadow-lg ring-2 ring-[#4f00f5]"
+            className="mx-auto mb-4 h-16 w-16 rounded-2xl object-cover shadow-lg ring-2 ring-brand-saffron-500"
           />
-          <h1 className="text-3xl font-bold tracking-tight text-[#172033]">Shivaji Youth</h1>
-          <p className="mt-2 text-sm text-slate-500">Shared cash ledger · Invite-only</p>
+          <h1 className="text-3xl font-bold tracking-tight text-brand-maroon-900">Shivaji Youth</h1>
+          <p className="mt-2 text-sm text-stone-500">Shared cash ledger · Invite-only</p>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_14px_45px_rgba(35,42,65,0.08)] sm:p-8">
-          <div className="mb-6 flex rounded-lg bg-slate-100 p-1">
+        <div className="card p-6 shadow-lift sm:p-8">
+          <div className="mb-6 flex rounded-lg bg-brand-saffron-50 p-1 ring-1 ring-brand-saffron-100">
             <button
               type="button"
               onClick={() => switchMode('login')}
               className={`flex-1 rounded-md py-2.5 text-sm font-semibold transition ${
-                mode === 'login' ? 'bg-white text-[#4f00f5] shadow-sm' : 'text-slate-500'
+                mode === 'login' ? 'bg-white text-brand-saffron-700 shadow-sm' : 'text-stone-500'
               }`}
             >
               Sign in
@@ -112,7 +107,7 @@ export function AuthScreen() {
               type="button"
               onClick={() => switchMode('signup')}
               className={`flex-1 rounded-md py-2.5 text-sm font-semibold transition ${
-                mode === 'signup' ? 'bg-white text-[#4f00f5] shadow-sm' : 'text-slate-500'
+                mode === 'signup' ? 'bg-white text-brand-saffron-700 shadow-sm' : 'text-stone-500'
               }`}
             >
               Create account
@@ -120,10 +115,10 @@ export function AuthScreen() {
           </div>
 
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-slate-900">
+            <h2 className="text-xl font-bold text-stone-900">
               {mode === 'login' ? 'Welcome back' : 'Join the youth team'}
             </h2>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-stone-500">
               {mode === 'login'
                 ? 'Sign in to view the team cash ledger.'
                 : 'You need a team invite to create an account. Enter the email your admin invited.'}
@@ -132,17 +127,17 @@ export function AuthScreen() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === 'signup' && (
-              <label className="block text-sm font-medium text-slate-700">
+              <label className="block text-sm font-medium text-stone-700">
                 Your name
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Rohan Patil"
-                  className="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none transition focus:border-[#4f00f5] focus:ring-2 focus:ring-[#4f00f5]/15"
+                  className="input-field"
                 />
               </label>
             )}
-            <label className="block text-sm font-medium text-slate-700">
+            <label className="block text-sm font-medium text-stone-700">
               Email address
               <input
                 type="email"
@@ -150,10 +145,10 @@ export function AuthScreen() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none transition focus:border-[#4f00f5] focus:ring-2 focus:ring-[#4f00f5]/15"
+                className="input-field"
               />
             </label>
-            <label className="block text-sm font-medium text-slate-700">
+            <label className="block text-sm font-medium text-stone-700">
               Password
               <input
                 type="password"
@@ -161,21 +156,18 @@ export function AuthScreen() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none transition focus:border-[#4f00f5] focus:ring-2 focus:ring-[#4f00f5]/15"
+                className="input-field"
               />
             </label>
             {error && <p className="text-sm text-rose-600">{error}</p>}
-            {notice && <p className="text-sm text-emerald-600">{notice}</p>}
-            <button
-              disabled={busy}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#4f00f5] py-3 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-[#4200d1] disabled:cursor-not-allowed disabled:opacity-60"
-            >
+            {notice && <p className="text-sm text-emerald-700">{notice}</p>}
+            <button disabled={busy} className="btn-primary-lg">
               {busy ? 'Please wait...' : mode === 'login' ? 'Sign in to ledger' : 'Create my account'}
             </button>
           </form>
         </div>
 
-        <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-xs text-slate-400">
+        <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-xs text-stone-400">
           <ShieldCheck className="h-3.5 w-3.5" />
           Invite-only · Only approved team members can join
         </p>

@@ -24,16 +24,12 @@ import { CompleteSetup } from '@/components/CompleteSetup';
 import { EntryFormCard } from '@/components/EntryFormCard';
 import { TransactionTable } from '@/components/TransactionTable';
 import { UsersPage } from '@/components/UsersPage';
+import { GANPATI_BG, SHIVAJI_IMG } from '@/lib/theme';
 
 type EntryForm = { type: TransactionType; amount: string; details: string };
 type Tab = 'overview' | 'transactions' | 'audit' | 'users';
 
 const emptyEntry: EntryForm = { type: 'expense', amount: '', details: '' };
-
-const SHIVAJI_IMG =
-  'https://images.pexels.com/photos/38876932/pexels-photo-38876932.jpeg?auto=compress&cs=tinysrgb&h=160&w=160';
-const GANPATI_BG =
-  'https://images.pexels.com/photos/28288479/pexels-photo-28288479.jpeg?auto=compress&cs=tinysrgb&h=1080&w=1920';
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -210,7 +206,7 @@ export default function App() {
 
   if (!setupChecked) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-slate-400">
+      <div className="flex min-h-screen items-center justify-center text-stone-400">
         Loading...
       </div>
     );
@@ -238,43 +234,45 @@ export default function App() {
   ];
 
   return (
-    <div className="relative min-h-screen text-[#172033]">
+    <div className="relative min-h-screen text-stone-900">
       <div className="fixed inset-0 -z-10">
         <img src={GANPATI_BG} alt="" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-slate-50/85 backdrop-blur-sm" />
+        <div className="page-backdrop" />
       </div>
 
-      <header className="border-b border-slate-200 bg-white/90 backdrop-blur">
+      <div className="fixed inset-x-0 top-0 z-20 h-1 bg-gradient-to-r from-brand-saffron-600 via-brand-gold-500 to-brand-maroon-700" />
+
+      <header className="border-b border-orange-200/60 bg-white/95 shadow-sm backdrop-blur-md">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex items-center gap-3">
             <img
               src={SHIVAJI_IMG}
               alt="Chhatrapati Shivaji Maharaj"
-              className="h-10 w-10 rounded-xl object-cover ring-2 ring-[#4f00f5]"
+              className="h-10 w-10 rounded-xl object-cover ring-2 ring-brand-saffron-500 shadow-sm"
             />
             <div>
-              <h1 className="text-base font-bold tracking-tight sm:text-lg">Shivaji Youth</h1>
-              <p className="hidden text-xs text-slate-500 sm:block">Team cash movement ledger</p>
+              <h1 className="text-base font-bold tracking-tight text-brand-maroon-800 sm:text-lg">Shivaji Youth</h1>
+              <p className="hidden text-xs text-stone-500 sm:block">Team cash movement ledger</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="hidden items-center gap-2 text-right sm:flex">
               <div>
-                <p className="text-sm font-semibold text-slate-800">{memberName}</p>
-                <p className="flex items-center gap-1 text-xs text-slate-400">
-                  {isAdmin && <Crown className="h-3 w-3 text-amber-500" />}
+                <p className="text-sm font-semibold text-stone-800">{memberName}</p>
+                <p className="flex items-center gap-1 text-xs text-stone-500">
+                  {isAdmin && <Crown className="h-3 w-3 text-brand-gold-500" />}
                   {isAdmin ? 'Admin' : 'Member'}
                 </p>
               </div>
             </div>
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-100 text-xs font-bold text-[#4f00f5]">
+            <div className="avatar-badge h-9 w-9">
               {getInitials(memberName)}
             </div>
             <button
               type="button"
               onClick={() => void supabase.auth.signOut()}
               aria-label="Sign out"
-              className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+              className="rounded-lg p-2 text-stone-400 transition hover:bg-brand-saffron-50 hover:text-brand-maroon-700"
             >
               <LogOut className="h-4 w-4" />
             </button>
@@ -290,8 +288,8 @@ export default function App() {
                 onClick={() => setTab(id)}
                 className={`flex items-center gap-2 whitespace-nowrap border-b-2 px-3 py-2.5 text-sm font-semibold transition ${
                   tab === id
-                    ? 'border-[#4f00f5] text-[#4f00f5]'
-                    : 'border-transparent text-slate-500 hover:text-slate-700'
+                    ? 'border-brand-saffron-600 text-brand-saffron-700'
+                    : 'border-transparent text-stone-500 hover:text-brand-maroon-800'
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -308,35 +306,41 @@ export default function App() {
           <div className="space-y-6">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-wider text-[#4f00f5]">Overview</p>
-                <h2 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Team finances</h2>
+                <p className="section-eyebrow">Overview</p>
+                <h2 className="mt-1 text-2xl font-bold tracking-tight text-brand-maroon-900 sm:text-3xl">Team finances</h2>
               </div>
-              <div className="hidden items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-500 sm:flex">
+              <div className="hidden items-center gap-2 rounded-lg border border-orange-200/70 bg-white/90 px-3 py-2 text-sm text-stone-600 shadow-sm sm:flex">
                 <Users className="h-4 w-4" />
                 {profiles.length || 1} member{profiles.length === 1 ? '' : 's'}
               </div>
             </div>
 
             <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <ArrowDownToLine className="h-5 w-5 text-emerald-600" />
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Total In</p>
+              <div className="stat-card border-l-4 border-l-emerald-500">
+                <div className="stat-card-body bg-gradient-to-br from-emerald-50/70 to-white">
+                  <div className="flex items-center gap-2">
+                    <ArrowDownToLine className="h-5 w-5 text-emerald-600" />
+                    <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Total In</p>
+                  </div>
+                  <p className="mt-2 text-2xl font-bold tabular-nums text-emerald-700">{formatCurrency(totalIncome)}</p>
                 </div>
-                <p className="mt-2 text-2xl font-bold tabular-nums text-emerald-600">{formatCurrency(totalIncome)}</p>
               </div>
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <ArrowUpFromLine className="h-5 w-5 text-rose-600" />
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Total Out</p>
+              <div className="stat-card border-l-4 border-l-rose-500">
+                <div className="stat-card-body bg-gradient-to-br from-rose-50/70 to-white">
+                  <div className="flex items-center gap-2">
+                    <ArrowUpFromLine className="h-5 w-5 text-rose-600" />
+                    <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Total Out</p>
+                  </div>
+                  <p className="mt-2 text-2xl font-bold tabular-nums text-rose-700">{formatCurrency(totalExpense)}</p>
                 </div>
-                <p className="mt-2 text-2xl font-bold tabular-nums text-rose-600">{formatCurrency(totalExpense)}</p>
               </div>
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Net Balance</p>
-                <p className={`mt-2 text-2xl font-bold tabular-nums ${balance >= 0 ? 'text-[#4f00f5]' : 'text-rose-600'}`}>
-                  {formatCurrency(balance)}
-                </p>
+              <div className="stat-card border-l-4 border-l-brand-saffron-500">
+                <div className="stat-card-body bg-gradient-to-br from-brand-saffron-50/80 to-white">
+                  <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Net Balance</p>
+                  <p className={`mt-2 text-2xl font-bold tabular-nums ${balance >= 0 ? 'text-brand-saffron-700' : 'text-rose-700'}`}>
+                    {formatCurrency(balance)}
+                  </p>
+                </div>
               </div>
             </section>
 
@@ -349,17 +353,17 @@ export default function App() {
               isAdmin={isAdmin}
             />
 
-            <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+            <section className="card overflow-hidden">
+              <div className="flex items-center justify-between border-b border-orange-100 px-5 py-4">
                 <div>
-                  <h3 className="font-bold text-slate-900">Recent Transactions</h3>
-                  <p className="mt-0.5 text-xs text-slate-500">Latest 5 entries</p>
+                  <h3 className="font-bold text-stone-900">Recent Transactions</h3>
+                  <p className="mt-0.5 text-xs text-stone-500">Latest 5 entries</p>
                 </div>
                 {transactions.length > 5 && (
                   <button
                     type="button"
                     onClick={() => setTab('transactions')}
-                    className="text-sm font-semibold text-[#4f00f5] transition hover:text-[#4200d1]"
+                    className="text-sm font-semibold text-brand-saffron-700 transition hover:text-brand-saffron-800"
                   >
                     View all
                   </button>
@@ -382,9 +386,9 @@ export default function App() {
         {tab === 'transactions' && (
           <div className="space-y-6">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-[#4f00f5]">Transactions</p>
-              <h2 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">All team activity</h2>
-              <p className="mt-1 text-sm text-slate-500">Every entry recorded by the team, newest first.</p>
+              <p className="section-eyebrow">Transactions</p>
+              <h2 className="mt-1 text-2xl font-bold tracking-tight text-brand-maroon-900 sm:text-3xl">All team activity</h2>
+              <p className="mt-1 text-sm text-stone-500">Every entry recorded by the team, newest first.</p>
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -393,7 +397,7 @@ export default function App() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by description or member name..."
-                className="flex-1 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-[#4f00f5] focus:ring-2 focus:ring-[#4f00f5]/15"
+                className="input-field mt-0 flex-1"
               />
               <div className="flex gap-2">
                 {(['all', 'income', 'expense'] as const).map((f) => (
@@ -403,8 +407,8 @@ export default function App() {
                     onClick={() => setFilter(f)}
                     className={`rounded-lg border px-4 py-2.5 text-sm font-semibold transition ${
                       filter === f
-                        ? 'border-[#4f00f5] bg-[#4f00f5] text-white'
-                        : 'border-slate-300 bg-white text-slate-600 hover:border-slate-400'
+                        ? 'border-brand-saffron-600 bg-brand-saffron-600 text-white shadow-sm shadow-brand-saffron-600/20'
+                        : 'border-orange-200 bg-white text-stone-600 hover:border-brand-saffron-300 hover:text-brand-maroon-800'
                     }`}
                   >
                     {f === 'all' ? 'All' : f === 'income' ? 'Received' : 'Spent'}
@@ -413,7 +417,7 @@ export default function App() {
               </div>
             </div>
 
-            <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <section className="card overflow-hidden">
               <TransactionTable
                 transactions={filteredTransactions}
                 profileNames={profileNames}
@@ -430,17 +434,17 @@ export default function App() {
         {tab === 'audit' && (
           <div className="space-y-6">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-[#4f00f5]">Audit Trail</p>
-              <h2 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Deletion log</h2>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="section-eyebrow">Audit Trail</p>
+              <h2 className="mt-1 text-2xl font-bold tracking-tight text-brand-maroon-900 sm:text-3xl">Deletion log</h2>
+              <p className="mt-1 text-sm text-stone-500">
                 Every deleted entry is recorded here with who removed it and when. This log cannot be edited or erased by team members.
               </p>
             </div>
 
-            <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-200 px-5 py-4">
-                <h3 className="font-bold text-slate-900">Deleted Entries</h3>
-                <p className="mt-0.5 text-xs text-slate-500">{auditLog.length} deletion{auditLog.length === 1 ? '' : 's'} recorded</p>
+            <section className="card overflow-hidden">
+              <div className="border-b border-orange-100 px-5 py-4">
+                <h3 className="font-bold text-stone-900">Deleted Entries</h3>
+                <p className="mt-0.5 text-xs text-stone-500">{auditLog.length} deletion{auditLog.length === 1 ? '' : 's'} recorded</p>
               </div>
 
               {auditLoading ? (
@@ -472,7 +476,7 @@ export default function App() {
                             {formatCurrency(Number(entry.transaction_amount))}
                           </td>
                           <td className="px-5 py-4">
-                            <span className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-[#4f00f5]">
+                            <span className="member-chip">
                               {entry.original_created_by ? profileNames.get(entry.original_created_by) || 'Team member' : 'Earlier entry'}
                             </span>
                           </td>
@@ -503,7 +507,7 @@ export default function App() {
           />
         )}
 
-        <p className="mt-8 text-center text-xs text-slate-400">
+        <p className="mt-8 text-center text-xs text-stone-400">
           Shared with the Shivaji Youth team · Entries are saved automatically
         </p>
       </main>

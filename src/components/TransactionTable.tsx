@@ -25,7 +25,7 @@ export function TransactionTable({
 
   if (loading) {
     return (
-      <div className="py-12 text-center text-sm text-slate-400">Loading team activity...</div>
+      <div className="py-12 text-center text-sm text-stone-400">Loading team activity...</div>
     );
   }
 
@@ -34,13 +34,13 @@ export function TransactionTable({
   }
 
   if (rows.length === 0) {
-    return <div className="py-12 text-center text-sm text-slate-400">{emptyMessage}</div>;
+    return <div className="py-12 text-center text-sm text-stone-400">{emptyMessage}</div>;
   }
 
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[680px] text-left text-sm">
-        <thead className="bg-slate-50 text-[11px] uppercase tracking-wider text-slate-500">
+        <thead className="bg-brand-saffron-50/50 text-[11px] uppercase tracking-wider text-stone-500">
           <tr>
             <th className="px-5 py-3 font-bold">Date</th>
             <th className="px-5 py-3 font-bold">Description</th>
@@ -50,13 +50,13 @@ export function TransactionTable({
             {onDelete && <th className="px-5 py-3" />}
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-orange-50">
           {rows.map((t) => (
-            <tr key={t.id} className="group transition hover:bg-slate-50">
-              <td className="whitespace-nowrap px-5 py-4 text-slate-500">{formatDate(t.created_at)}</td>
-              <td className="max-w-[280px] px-5 py-4 font-semibold text-slate-800">{t.details}</td>
+            <tr key={t.id} className="group transition hover:bg-brand-saffron-50/30">
+              <td className="whitespace-nowrap px-5 py-4 text-stone-500">{formatDate(t.created_at)}</td>
+              <td className="max-w-[280px] px-5 py-4 font-semibold text-stone-800">{t.details}</td>
               <td className="px-5 py-4">
-                <span className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-[#4f00f5]">
+                <span className="member-chip">
                   {t.created_by ? profileNames.get(t.created_by) || 'Team member' : 'Earlier entry'}
                 </span>
               </td>
