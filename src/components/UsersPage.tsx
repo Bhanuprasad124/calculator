@@ -95,7 +95,7 @@ export function UsersPage({ profiles, invites, currentUserId, isAdmin, onRoleCha
     <div className="space-y-6">
       <div>
         <p className="section-eyebrow">Team</p>
-        <h2 className="mt-1 text-2xl font-bold tracking-tight text-brand-maroon-900 sm:text-3xl">Members &amp; Access</h2>
+        <h2 className="brand-title mt-2 text-2xl font-bold text-brand-maroon-900 sm:text-3xl">Members &amp; Access</h2>
         <p className="mt-1 text-sm text-stone-500">
           Manage who can join and what they can do. Admins can add, edit, and delete entries; members have read-only access.
         </p>
@@ -107,9 +107,9 @@ export function UsersPage({ profiles, invites, currentUserId, isAdmin, onRoleCha
 
       {/* === INVITE SECTION (admin only) === */}
       {isAdmin && (
-        <section className="card p-5 sm:p-6">
+        <section className="card card-fancy p-5 sm:p-6">
           <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+            <div className="icon-circle-emerald h-10 w-10">
               <UserPlus className="h-5 w-5" />
             </div>
             <div>
@@ -176,7 +176,7 @@ export function UsersPage({ profiles, invites, currentUserId, isAdmin, onRoleCha
 
       {/* === MEMBERS LIST === */}
       <section className="card overflow-hidden">
-        <div className="border-b border-orange-100 px-5 py-4">
+        <div className="border-b border-orange-100 bg-gradient-to-r from-brand-saffron-50/60 to-white px-5 py-4">
           <h3 className="font-bold text-stone-900">All Members</h3>
           <p className="mt-0.5 text-xs text-stone-500">{profiles.length} member{profiles.length === 1 ? '' : 's'}</p>
         </div>

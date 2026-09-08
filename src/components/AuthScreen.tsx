@@ -79,20 +79,27 @@ export function AuthScreen() {
       <div className="fixed inset-0 -z-10">
         <img src={GANPATI_BG} alt="" className="h-full w-full object-cover" />
         <div className="page-backdrop" />
+        <div className="page-pattern" />
       </div>
 
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <img
-            src={SHIVAJI_IMG}
-            alt="Chhatrapati Shivaji Maharaj"
-            className="mx-auto mb-4 h-16 w-16 rounded-2xl object-cover shadow-lg ring-2 ring-brand-saffron-500"
-          />
-          <h1 className="text-3xl font-bold tracking-tight text-brand-maroon-900">Shivaji Youth</h1>
-          <p className="mt-2 text-sm text-stone-500">Shared cash ledger · Invite-only</p>
+          <div className="relative mx-auto mb-5 w-fit">
+            <div className="absolute -inset-3 rounded-full bg-brand-saffron-400/20 blur-xl" />
+            <img
+              src={SHIVAJI_IMG}
+              alt="Chhatrapati Shivaji Maharaj"
+              className="logo-frame relative mx-auto h-20 w-20"
+            />
+          </div>
+          <h1 className="brand-title text-3xl font-bold text-brand-maroon-900 sm:text-4xl">Shivaji Youth</h1>
+          <p className="mt-2 text-sm font-medium text-stone-500">Shared cash ledger · Invite-only</p>
+          <div className="ornament-line mx-auto mt-4 max-w-[200px]">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-brand-saffron-400">जय शिवराय</span>
+          </div>
         </div>
 
-        <div className="card p-6 shadow-lift sm:p-8">
+        <div className="card card-fancy p-6 shadow-lift sm:p-8">
           <div className="mb-6 flex rounded-lg bg-brand-saffron-50 p-1 ring-1 ring-brand-saffron-100">
             <button
               type="button"

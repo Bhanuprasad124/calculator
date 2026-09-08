@@ -40,7 +40,7 @@ export function TransactionTable({
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[680px] text-left text-sm">
-        <thead className="bg-brand-saffron-50/50 text-[11px] uppercase tracking-wider text-stone-500">
+        <thead className="bg-gradient-to-r from-brand-saffron-50/80 to-orange-50/50 text-[11px] uppercase tracking-wider text-brand-maroon-800/70">
           <tr>
             <th className="px-5 py-3 font-bold">Date</th>
             <th className="px-5 py-3 font-bold">Description</th>
@@ -52,7 +52,7 @@ export function TransactionTable({
         </thead>
         <tbody className="divide-y divide-orange-50">
           {rows.map((t) => (
-            <tr key={t.id} className="group transition hover:bg-brand-saffron-50/30">
+            <tr key={t.id} className="group transition hover:bg-brand-saffron-50/40">
               <td className="whitespace-nowrap px-5 py-4 text-stone-500">{formatDate(t.created_at)}</td>
               <td className="max-w-[280px] px-5 py-4 font-semibold text-stone-800">{t.details}</td>
               <td className="px-5 py-4">

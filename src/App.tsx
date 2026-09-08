@@ -238,22 +238,23 @@ export default function App() {
       <div className="fixed inset-0 -z-10">
         <img src={GANPATI_BG} alt="" className="h-full w-full object-cover" />
         <div className="page-backdrop" />
+        <div className="page-pattern" />
       </div>
 
       <div className="sticky top-0 z-30">
-        <div className="h-1 bg-gradient-to-r from-brand-saffron-600 via-brand-gold-500 to-brand-maroon-700" />
+        <div className="h-1.5 bg-gradient-to-r from-brand-saffron-500 via-brand-gold-400 to-brand-maroon-700" />
 
-        <header className="border-b border-orange-200/60 bg-white/95 shadow-sm backdrop-blur-md">
+        <header className="header-shell">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex items-center gap-3">
             <img
               src={SHIVAJI_IMG}
               alt="Chhatrapati Shivaji Maharaj"
-              className="h-10 w-10 rounded-xl object-cover ring-2 ring-brand-saffron-500 shadow-sm"
+              className="logo-frame h-11 w-11 sm:h-12 sm:w-12"
             />
             <div>
-              <h1 className="text-base font-bold tracking-tight text-brand-maroon-800 sm:text-lg">Shivaji Youth</h1>
-              <p className="hidden text-xs text-stone-500 sm:block">Team cash movement ledger</p>
+              <h1 className="brand-title text-lg font-bold text-brand-maroon-900 sm:text-xl">Shivaji Youth</h1>
+              <p className="hidden text-xs font-medium text-stone-500 sm:block">Team cash movement ledger</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -280,18 +281,14 @@ export default function App() {
           </div>
         </div>
 
-        <nav className="mx-auto max-w-4xl px-4 sm:px-6">
-          <div className="flex gap-1 overflow-x-auto pb-px">
+        <nav className="mx-auto max-w-4xl px-4 pb-3 sm:px-6">
+          <div className="flex gap-1.5 overflow-x-auto rounded-2xl bg-brand-saffron-50/50 p-1 ring-1 ring-brand-saffron-100/80">
             {tabs.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 type="button"
                 onClick={() => setTab(id)}
-                className={`flex items-center gap-2 whitespace-nowrap border-b-2 px-3 py-2.5 text-sm font-semibold transition ${
-                  tab === id
-                    ? 'border-brand-saffron-600 text-brand-saffron-700'
-                    : 'border-transparent text-stone-500 hover:text-brand-maroon-800'
-                }`}
+                className={tab === id ? 'tab-pill-active' : 'tab-pill-inactive'}
               >
                 <Icon className="h-4 w-4" />
                 {label}
@@ -309,9 +306,12 @@ export default function App() {
             <div className="flex items-end justify-between gap-4">
               <div>
                 <p className="section-eyebrow">Overview</p>
-                <h2 className="mt-1 text-2xl font-bold tracking-tight text-brand-maroon-900 sm:text-3xl">Team finances</h2>
+                <h2 className="brand-title mt-2 text-2xl font-bold text-brand-maroon-900 sm:text-3xl">Team finances</h2>
+                <div className="ornament-line mt-3 max-w-xs">
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand-saffron-400">जय शिवराय</span>
+                </div>
               </div>
-              <div className="hidden items-center gap-2 rounded-lg border border-orange-200/70 bg-white/90 px-3 py-2 text-sm text-stone-600 shadow-sm sm:flex">
+              <div className="hidden items-center gap-2 rounded-xl border border-orange-200/70 bg-gradient-to-br from-white to-brand-saffron-50/50 px-4 py-2.5 text-sm font-medium text-stone-600 shadow-sm sm:flex">
                 <Users className="h-4 w-4" />
                 {profiles.length || 1} member{profiles.length === 1 ? '' : 's'}
               </div>
@@ -319,29 +319,44 @@ export default function App() {
 
             <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <div className="stat-card border-l-4 border-l-emerald-500">
-                <div className="stat-card-body bg-gradient-to-br from-emerald-50/70 to-white">
-                  <div className="flex items-center gap-2">
-                    <ArrowDownToLine className="h-5 w-5 text-emerald-600" />
-                    <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Total In</p>
+                <div className="stat-card-body bg-gradient-to-br from-emerald-50/80 via-white to-white after:bg-emerald-400">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Total In</p>
+                      <p className="mt-2 text-2xl font-bold tabular-nums text-emerald-700">{formatCurrency(totalIncome)}</p>
+                    </div>
+                    <div className="icon-circle-emerald h-10 w-10">
+                      <ArrowDownToLine className="h-5 w-5" />
+                    </div>
                   </div>
-                  <p className="mt-2 text-2xl font-bold tabular-nums text-emerald-700">{formatCurrency(totalIncome)}</p>
                 </div>
               </div>
               <div className="stat-card border-l-4 border-l-rose-500">
-                <div className="stat-card-body bg-gradient-to-br from-rose-50/70 to-white">
-                  <div className="flex items-center gap-2">
-                    <ArrowUpFromLine className="h-5 w-5 text-rose-600" />
-                    <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Total Out</p>
+                <div className="stat-card-body bg-gradient-to-br from-rose-50/80 via-white to-white after:bg-rose-400">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Total Out</p>
+                      <p className="mt-2 text-2xl font-bold tabular-nums text-rose-700">{formatCurrency(totalExpense)}</p>
+                    </div>
+                    <div className="icon-circle-rose h-10 w-10">
+                      <ArrowUpFromLine className="h-5 w-5" />
+                    </div>
                   </div>
-                  <p className="mt-2 text-2xl font-bold tabular-nums text-rose-700">{formatCurrency(totalExpense)}</p>
                 </div>
               </div>
               <div className="stat-card border-l-4 border-l-brand-saffron-500">
-                <div className="stat-card-body bg-gradient-to-br from-brand-saffron-50/80 to-white">
-                  <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Net Balance</p>
-                  <p className={`mt-2 text-2xl font-bold tabular-nums ${balance >= 0 ? 'text-brand-saffron-700' : 'text-rose-700'}`}>
-                    {formatCurrency(balance)}
-                  </p>
+                <div className="stat-card-body bg-gradient-to-br from-brand-saffron-50/90 via-white to-white after:bg-brand-saffron-400">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Net Balance</p>
+                      <p className={`mt-2 text-2xl font-bold tabular-nums ${balance >= 0 ? 'text-brand-saffron-700' : 'text-rose-700'}`}>
+                        {formatCurrency(balance)}
+                      </p>
+                    </div>
+                    <div className="icon-circle-saffron h-10 w-10">
+                      <LayoutGrid className="h-5 w-5" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </section>
@@ -389,7 +404,7 @@ export default function App() {
           <div className="space-y-6">
             <div>
               <p className="section-eyebrow">Transactions</p>
-              <h2 className="mt-1 text-2xl font-bold tracking-tight text-brand-maroon-900 sm:text-3xl">All team activity</h2>
+              <h2 className="brand-title mt-2 text-2xl font-bold text-brand-maroon-900 sm:text-3xl">All team activity</h2>
               <p className="mt-1 text-sm text-stone-500">Every entry recorded by the team, newest first.</p>
             </div>
 
@@ -437,7 +452,7 @@ export default function App() {
           <div className="space-y-6">
             <div>
               <p className="section-eyebrow">Audit Trail</p>
-              <h2 className="mt-1 text-2xl font-bold tracking-tight text-brand-maroon-900 sm:text-3xl">Deletion log</h2>
+              <h2 className="brand-title mt-2 text-2xl font-bold text-brand-maroon-900 sm:text-3xl">Deletion log</h2>
               <p className="mt-1 text-sm text-stone-500">
                 Every deleted entry is recorded here with who removed it and when. This log cannot be edited or erased by team members.
               </p>

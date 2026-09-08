@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
   color: #1c1917;
   background: #fffbf5;
   font-synthesis: none;
@@ -27,49 +27,123 @@ select {
 }
 
 @layer components {
+  .brand-title {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    letter-spacing: -0.02em;
+  }
+
   .page-backdrop {
-    @apply absolute inset-0 backdrop-blur-[2px];
-    background: linear-gradient(
-      to bottom right,
-      rgb(255 247 237 / 0.92),
-      rgb(255 251 235 / 0.88),
-      rgb(254 242 242 / 0.85)
-    );
+    @apply absolute inset-0 backdrop-blur-[3px];
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgb(234 88 12 / 0.12), transparent 55%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgb(127 29 29 / 0.08), transparent 50%),
+      linear-gradient(
+        to bottom right,
+        rgb(255 247 237 / 0.94),
+        rgb(255 251 235 / 0.9),
+        rgb(254 242 242 / 0.88)
+      );
+  }
+
+  .page-pattern {
+    @apply pointer-events-none absolute inset-0 opacity-[0.035];
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c2410c' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
   .card {
-    @apply rounded-2xl border border-orange-100/80 bg-white/95 shadow-card backdrop-blur-sm;
+    @apply relative overflow-hidden rounded-2xl border border-orange-100/90 bg-white/95 shadow-card backdrop-blur-sm transition-shadow duration-300 hover:shadow-lift;
+  }
+
+  .card-fancy::before {
+    content: '';
+    @apply absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-saffron-500 via-brand-gold-500 to-brand-maroon-600;
   }
 
   .section-eyebrow {
-    @apply text-sm font-semibold uppercase tracking-wider text-brand-saffron-700;
+    @apply inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-brand-saffron-700;
+  }
+
+  .section-eyebrow::before {
+    content: '';
+    @apply h-1.5 w-1.5 rounded-full bg-brand-gold-500;
+  }
+
+  .ornament-line {
+    @apply flex items-center gap-3 text-brand-saffron-300;
+  }
+
+  .ornament-line::before,
+  .ornament-line::after {
+    content: '';
+    @apply h-px flex-1 bg-gradient-to-r from-transparent via-brand-saffron-300 to-transparent;
   }
 
   .input-field {
-    @apply mt-1.5 w-full rounded-lg border border-orange-200/80 bg-white px-3 py-2.5 text-stone-800 outline-none transition placeholder:text-stone-400 focus:border-brand-saffron-500 focus:ring-2 focus:ring-brand-saffron-500/20;
+    @apply mt-1.5 w-full rounded-xl border border-orange-200/80 bg-white/90 px-3.5 py-2.5 text-stone-800 shadow-sm outline-none transition placeholder:text-stone-400 focus:border-brand-saffron-500 focus:bg-white focus:ring-2 focus:ring-brand-saffron-500/20;
   }
 
   .btn-primary {
-    @apply flex items-center justify-center gap-2 rounded-lg bg-brand-saffron-600 px-6 text-sm font-bold text-white shadow-md shadow-brand-saffron-600/25 transition hover:bg-brand-saffron-700 disabled:cursor-not-allowed disabled:opacity-60;
+    @apply relative flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-brand-saffron-600 to-brand-saffron-700 px-6 text-sm font-bold text-white shadow-md shadow-brand-saffron-600/30 transition hover:from-brand-saffron-700 hover:to-brand-maroon-700 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .btn-primary-lg {
-    @apply btn-primary w-full py-3 shadow-lift;
+    @apply btn-primary w-full py-3.5 shadow-lift;
   }
 
   .avatar-badge {
-    @apply flex items-center justify-center rounded-full bg-brand-saffron-100 text-xs font-bold text-brand-saffron-800;
+    @apply flex items-center justify-center rounded-full bg-gradient-to-br from-brand-saffron-100 to-brand-saffron-200 text-xs font-bold text-brand-maroon-800 ring-2 ring-white shadow-sm;
   }
 
   .member-chip {
-    @apply inline-flex items-center rounded-full bg-brand-saffron-50 px-2.5 py-1 text-xs font-semibold text-brand-maroon-700 ring-1 ring-brand-saffron-200/60;
+    @apply inline-flex items-center rounded-full bg-gradient-to-r from-brand-saffron-50 to-orange-50 px-2.5 py-1 text-xs font-semibold text-brand-maroon-700 ring-1 ring-brand-saffron-200/70;
+  }
+
+  .icon-circle {
+    @apply flex shrink-0 items-center justify-center rounded-xl shadow-sm ring-1 ring-white/80;
+  }
+
+  .icon-circle-emerald {
+    @apply icon-circle bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-700;
+  }
+
+  .icon-circle-rose {
+    @apply icon-circle bg-gradient-to-br from-rose-100 to-rose-50 text-rose-700;
+  }
+
+  .icon-circle-saffron {
+    @apply icon-circle bg-gradient-to-br from-brand-saffron-100 to-orange-50 text-brand-saffron-800;
   }
 
   .stat-card {
-    @apply card overflow-hidden p-0;
+    @apply card overflow-hidden p-0 transition-transform duration-300 hover:-translate-y-0.5;
   }
 
   .stat-card-body {
-    @apply p-5;
+    @apply relative p-5;
+  }
+
+  .stat-card-body::after {
+    content: '';
+    @apply pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-20 blur-2xl;
+  }
+
+  .tab-pill {
+    @apply flex items-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-2 text-sm font-semibold transition-all duration-200;
+  }
+
+  .tab-pill-active {
+    @apply tab-pill bg-gradient-to-r from-brand-saffron-600 to-brand-saffron-700 text-white shadow-md shadow-brand-saffron-600/25;
+  }
+
+  .tab-pill-inactive {
+    @apply tab-pill text-stone-500 hover:bg-brand-saffron-50/80 hover:text-brand-maroon-800;
+  }
+
+  .header-shell {
+    @apply border-b border-orange-200/50 bg-white/90 shadow-[0_4px_30px_rgba(127,29,29,0.06)] backdrop-blur-xl;
+  }
+
+  .logo-frame {
+    @apply rounded-2xl object-cover shadow-md ring-2 ring-brand-gold-400/80 ring-offset-2 ring-offset-white;
   }
 }

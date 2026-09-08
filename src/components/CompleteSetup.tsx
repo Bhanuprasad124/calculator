@@ -66,22 +66,26 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
       <div className="fixed inset-0 -z-10">
         <img src={GANPATI_BG} alt="" className="h-full w-full object-cover" />
         <div className="page-backdrop" />
+        <div className="page-pattern" />
       </div>
 
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <img
-            src={SHIVAJI_IMG}
-            alt="Chhatrapati Shivaji Maharaj"
-            className="mx-auto mb-4 h-16 w-16 rounded-2xl object-cover shadow-lg ring-2 ring-brand-saffron-500"
-          />
-          <h1 className="text-3xl font-bold tracking-tight text-brand-maroon-900">Shivaji Youth</h1>
-          <p className="mt-2 text-sm text-stone-500">Complete your team account</p>
+          <div className="relative mx-auto mb-5 w-fit">
+            <div className="absolute -inset-3 rounded-full bg-brand-gold-400/25 blur-xl" />
+            <img
+              src={SHIVAJI_IMG}
+              alt="Chhatrapati Shivaji Maharaj"
+              className="logo-frame relative mx-auto h-20 w-20"
+            />
+          </div>
+          <h1 className="brand-title text-3xl font-bold text-brand-maroon-900">Shivaji Youth</h1>
+          <p className="mt-2 text-sm font-medium text-stone-500">Complete your team account</p>
         </div>
 
-        <div className="card p-6 shadow-lift sm:p-8">
+        <div className="card card-fancy p-6 shadow-lift sm:p-8">
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-stone-900">Welcome to the team!</h2>
+            <h2 className="brand-title text-xl font-bold text-brand-maroon-900">Welcome to the team!</h2>
             <p className="mt-1 text-sm text-stone-500">
               You're signing in as <span className="font-semibold text-brand-maroon-800">{email}</span>.
               Choose your name and a password to finish setting up your account.
