@@ -28,7 +28,7 @@ export function TransactionTable({
   }
 
   if (error) {
-    return <p className="py-12 text-center text-sm text-maratha-outflow">{error}</p>;
+    return <p className="py-12 text-center text-sm text-temple-outflow">{error}</p>;
   }
 
   if (rows.length === 0) {
@@ -52,7 +52,7 @@ export function TransactionTable({
           {rows.map((t) => (
             <tr key={t.id} className="group">
               <td className="whitespace-nowrap text-muted">{formatDate(t.created_at)}</td>
-              <td className="max-w-[280px] font-semibold text-white">{t.details}</td>
+              <td className="max-w-[280px] font-semibold">{t.details}</td>
               <td>
                 <span className="member-chip">
                   {t.created_by ? profileNames.get(t.created_by) || 'Team member' : 'Earlier entry'}
@@ -61,7 +61,7 @@ export function TransactionTable({
               <td>
                 <span
                   className={`inline-flex items-center gap-1 font-bold ${
-                    t.type === 'income' ? 'text-maratha-inflow' : 'text-maratha-outflow'
+                    t.type === 'income' ? 'text-temple-inflow' : 'text-temple-outflow'
                   }`}
                 >
                   {t.type === 'income' ? (
@@ -74,7 +74,7 @@ export function TransactionTable({
               </td>
               <td
                 className={`text-right font-bold tabular-nums ${
-                  t.type === 'income' ? 'text-maratha-inflow' : 'text-maratha-outflow'
+                  t.type === 'income' ? 'text-temple-inflow' : 'text-temple-outflow'
                 }`}
               >
                 {t.type === 'income' ? '+' : '-'}
@@ -86,7 +86,7 @@ export function TransactionTable({
                     type="button"
                     onClick={() => onDelete(t.id)}
                     aria-label="Delete entry"
-                    className="rounded p-1 text-muted opacity-0 transition hover:bg-maratha-outflow/15 hover:text-maratha-outflow group-hover:opacity-100"
+                    className="rounded p-1 text-stone-300 opacity-0 transition hover:bg-temple-outflow/10 hover:text-temple-outflow group-hover:opacity-100"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>

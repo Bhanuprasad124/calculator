@@ -24,7 +24,7 @@ import { CompleteSetup } from '@/components/CompleteSetup';
 import { EntryFormCard } from '@/components/EntryFormCard';
 import { TransactionTable } from '@/components/TransactionTable';
 import { UsersPage } from '@/components/UsersPage';
-import { GANPATI_BG, SHIVAJI_IMG } from '@/lib/theme';
+import { GANPATI_CENTER, SHIVAJI_IMG, TEMPLE_BG } from '@/lib/theme';
 
 type EntryForm = { type: TransactionType; amount: string; details: string };
 type Tab = 'overview' | 'transactions' | 'audit' | 'users';
@@ -206,7 +206,7 @@ export default function App() {
 
   if (!setupChecked) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-maratha-gradient text-muted">
+      <div className="flex min-h-screen items-center justify-center bg-temple-parchment text-muted">
         Loading...
       </div>
     );
@@ -235,49 +235,34 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen text-primary">
-      <div className="fixed inset-0 -z-10">
-        <div className="page-backdrop" />
-        <img src={GANPATI_BG} alt="" className="page-watermark" />
-        <div className="page-pattern" />
-        <div className="page-ornate-corner bottom-0 left-0 rotate-180" />
-        <div className="page-ornate-corner right-0 top-0" />
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <img src={TEMPLE_BG} alt="" className="page-temple-bg" />
+        <div className="page-vignette" />
+        <img src={GANPATI_CENTER} alt="" className="page-ganesha-center" />
+        <div className="page-diyas" aria-hidden="true" />
       </div>
 
-      <div className="sticky top-0 z-30">
-        <header className="royal-header">
-          <div className="mx-auto max-w-4xl px-3 pb-3 pt-2 sm:px-4">
-            <div className="royal-banner flex items-center justify-between gap-3 sm:gap-4">
-              <div className="flex min-w-0 items-center gap-3">
+      <div className="sticky top-0 z-30 px-3 pt-3 sm:px-4">
+        <header className="floating-header mx-auto max-w-5xl px-3 py-2.5 sm:px-4 sm:py-3">
+          <div className="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:gap-4">
+            <div className="flex items-center justify-between gap-3 lg:justify-start">
+              <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
                 <img
                   src={SHIVAJI_IMG}
                   alt="Chhatrapati Shivaji Maharaj"
                   className="logo-portrait"
                 />
                 <div className="min-w-0">
-                  <h1 className="brand-title truncate text-base font-bold text-white sm:text-xl">
+                  <h1 className="brand-title truncate text-sm font-bold text-temple-brown sm:text-base">
                     Shivaji Youth
                   </h1>
-                  <p className="truncate text-xs font-medium text-secondary sm:text-sm">
+                  <p className="truncate text-[11px] text-temple-muted sm:text-xs">
                     Team cash movement ledger
                   </p>
                 </div>
               </div>
-              <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-                <div className="admin-pill">
-                  <div className="profile-avatar hidden sm:flex">
-                    {getInitials(memberName)}
-                  </div>
-                  <div className="text-right">
-                    <p className="max-w-[120px] truncate text-sm font-semibold text-white sm:max-w-[160px]">
-                      {memberName}
-                    </p>
-                    <p className="flex items-center justify-end gap-1 text-xs text-secondary">
-                      {isAdmin && <Crown className="h-3 w-3 text-brand-gold-400" />}
-                      {isAdmin ? 'Admin' : 'Member'}
-                    </p>
-                  </div>
-                </div>
-                <div className="profile-avatar sm:hidden">{getInitials(memberName)}</div>
+              <div className="flex items-center gap-2 lg:hidden">
+                <div className="profile-avatar">{getInitials(memberName)}</div>
                 <button
                   type="button"
                   onClick={() => void supabase.auth.signOut()}
@@ -289,21 +274,41 @@ export default function App() {
               </div>
             </div>
 
-            <nav className="mt-3">
-              <div className="tab-bar">
-                {tabs.map(({ id, label, icon: Icon }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => setTab(id)}
-                    className={tab === id ? 'tab-pill-active' : 'tab-pill-inactive'}
-                  >
-                    <Icon className="h-4 w-4" />
-                    {label}
-                  </button>
-                ))}
-              </div>
+            <nav className="tab-bar flex-1 lg:justify-center">
+              {tabs.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setTab(id)}
+                  className={tab === id ? 'tab-pill-active' : 'tab-pill-inactive'}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="hidden sm:inline">{label}</span>
+                  <span className="sm:hidden">{id === 'overview' ? 'Overview' : id === 'transactions' ? 'Txns' : id === 'audit' ? 'Audit' : 'Team'}</span>
+                </button>
+              ))}
             </nav>
+
+            <div className="hidden items-center gap-2.5 lg:flex">
+              <div className="text-right">
+                <p className="max-w-[120px] truncate text-sm font-semibold text-temple-brown">
+                  {memberName}
+                </p>
+                <p className="admin-badge justify-end">
+                  {isAdmin && <Crown className="h-3 w-3 text-brand-gold-500" />}
+                  {isAdmin ? 'Admin' : 'Member'}
+                </p>
+              </div>
+              <div className="profile-avatar">{getInitials(memberName)}</div>
+              <button
+                type="button"
+                onClick={() => void supabase.auth.signOut()}
+                aria-label="Sign out"
+                className="btn-ghost"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </header>
       </div>
@@ -312,24 +317,24 @@ export default function App() {
         {/* === OVERVIEW TAB === */}
         {tab === 'overview' && (
           <div className="space-y-6">
-            <div className="flex items-end justify-between gap-4">
+            <div className="relative flex items-end justify-between gap-4">
               <div>
                 <p className="section-eyebrow">Overview</p>
-                <h2 className="brand-title mt-2 text-2xl font-bold text-white sm:text-3xl">Team finances</h2>
+                <h2 className="brand-title mt-2 text-2xl font-bold text-temple-brown sm:text-3xl">Team finances</h2>
                 <div className="ornament-line mt-3 max-w-xs">
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand-gold-400/80">
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand-saffron-500/80">
                     जय शिवराय
                   </span>
                 </div>
               </div>
-              <div className="hidden items-center gap-2 rounded-xl border border-brand-gold-400/30 bg-white/5 px-4 py-2.5 text-sm font-medium text-secondary shadow-gold sm:flex">
-                <Users className="h-4 w-4 text-brand-gold-400" />
+              <div className="member-count-pill shrink-0">
+                <span aria-hidden="true">👥</span>
                 {profiles.length || 1} member{profiles.length === 1 ? '' : 's'}
               </div>
             </div>
 
             <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="glass-stat">
+              <div className="glass-stat glass-stat-in">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="glass-stat-label">Total In</p>
@@ -340,7 +345,7 @@ export default function App() {
                   </div>
                 </div>
               </div>
-              <div className="glass-stat">
+              <div className="glass-stat glass-stat-out">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="glass-stat-label">Total Out</p>
@@ -351,17 +356,11 @@ export default function App() {
                   </div>
                 </div>
               </div>
-              <div className="glass-stat">
+              <div className="glass-stat glass-stat-balance">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="glass-stat-label">Net Balance</p>
-                    <p
-                      className={
-                        balance >= 0 ? 'glass-stat-value-balance' : 'glass-stat-value-balance-negative'
-                      }
-                    >
-                      {formatCurrency(balance)}
-                    </p>
+                    <p className="glass-stat-value-balance">{formatCurrency(balance)}</p>
                   </div>
                   <div className="stat-icon-balance">
                     <LayoutGrid className="h-5 w-5" />
@@ -380,16 +379,16 @@ export default function App() {
             />
 
             <section className="card overflow-hidden">
-              <div className="flex items-center justify-between border-b border-brand-gold-400/20 px-5 py-4">
+              <div className="flex items-center justify-between border-b border-white/50 px-5 py-4">
                 <div>
-                  <h3 className="font-bold text-white">Recent Transactions</h3>
+                  <h3 className="font-bold text-temple-brown">Recent Transactions</h3>
                   <p className="mt-0.5 text-xs text-muted">Latest 5 entries</p>
                 </div>
                 {transactions.length > 5 && (
                   <button
                     type="button"
                     onClick={() => setTab('transactions')}
-                    className="text-sm font-semibold text-brand-gold-400 transition hover:text-brand-gold-300"
+                    className="text-sm font-semibold text-brand-saffron-700 transition hover:text-brand-saffron-800"
                   >
                     View all
                   </button>
@@ -413,7 +412,7 @@ export default function App() {
           <div className="space-y-6">
             <div>
               <p className="section-eyebrow">Transactions</p>
-              <h2 className="brand-title mt-2 text-2xl font-bold text-white sm:text-3xl">All team activity</h2>
+              <h2 className="brand-title mt-2 text-2xl font-bold text-temple-brown sm:text-3xl">All team activity</h2>
               <p className="mt-1 text-sm text-secondary">Every entry recorded by the team, newest first.</p>
             </div>
 
@@ -457,15 +456,15 @@ export default function App() {
           <div className="space-y-6">
             <div>
               <p className="section-eyebrow">Audit Trail</p>
-              <h2 className="brand-title mt-2 text-2xl font-bold text-white sm:text-3xl">Deletion log</h2>
+              <h2 className="brand-title mt-2 text-2xl font-bold text-temple-brown sm:text-3xl">Deletion log</h2>
               <p className="mt-1 text-sm text-secondary">
                 Every deleted entry is recorded here with who removed it and when. This log cannot be edited or erased by team members.
               </p>
             </div>
 
             <section className="card overflow-hidden">
-              <div className="border-b border-brand-gold-400/20 px-5 py-4">
-                <h3 className="font-bold text-white">Deleted Entries</h3>
+              <div className="border-b border-white/50 px-5 py-4">
+                <h3 className="font-bold text-temple-brown">Deleted Entries</h3>
                 <p className="mt-0.5 text-xs text-muted">
                   {auditLog.length} deletion{auditLog.length === 1 ? '' : 's'} recorded
                 </p>
@@ -474,7 +473,7 @@ export default function App() {
               {auditLoading ? (
                 <div className="py-12 text-center text-sm text-muted">Loading audit trail...</div>
               ) : auditError ? (
-                <p className="py-12 text-center text-sm text-maratha-outflow">{auditError}</p>
+                <p className="py-12 text-center text-sm text-temple-outflow">{auditError}</p>
               ) : auditLog.length === 0 ? (
                 <div className="py-12 text-center text-sm text-muted">
                   No deletions recorded. When someone removes an entry, it will appear here.
@@ -495,10 +494,10 @@ export default function App() {
                       {auditLog.map((entry) => (
                         <tr key={entry.id}>
                           <td className="whitespace-nowrap text-muted">{formatDateTime(entry.deleted_at)}</td>
-                          <td className="max-w-[220px] font-semibold text-white">{entry.transaction_details}</td>
+                          <td className="max-w-[220px] font-semibold text-temple-brown">{entry.transaction_details}</td>
                           <td
                             className={`font-bold tabular-nums ${
-                              entry.transaction_type === 'income' ? 'text-maratha-inflow' : 'text-maratha-outflow'
+                              entry.transaction_type === 'income' ? 'text-temple-inflow' : 'text-temple-outflow'
                             }`}
                           >
                             {formatCurrency(Number(entry.transaction_amount))}
@@ -511,7 +510,7 @@ export default function App() {
                             </span>
                           </td>
                           <td>
-                            <span className="inline-flex items-center rounded-full bg-maratha-outflow/15 px-2.5 py-1 text-xs font-semibold text-maratha-outflow ring-1 ring-maratha-outflow/25">
+                            <span className="inline-flex items-center rounded-full bg-temple-outflow/10 px-2.5 py-1 text-xs font-semibold text-temple-outflow ring-1 ring-temple-outflow/20">
                               {entry.deleted_by
                                 ? profileNames.get(entry.deleted_by) || 'Team member'
                                 : 'Unknown'}

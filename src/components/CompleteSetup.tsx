@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { GANPATI_BG, SHIVAJI_IMG } from '@/lib/theme';
+import { GANPATI_CENTER, SHIVAJI_IMG, TEMPLE_BG } from '@/lib/theme';
 import { friendlySetupError } from '@/lib/utils';
 
 interface CompleteSetupProps {
@@ -63,37 +63,38 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
 
   return (
     <main className="relative flex min-h-screen items-center justify-center px-4 py-10 text-primary">
-      <div className="fixed inset-0 -z-10">
-        <div className="page-backdrop" />
-        <img src={GANPATI_BG} alt="" className="page-watermark" />
-        <div className="page-pattern" />
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <img src={TEMPLE_BG} alt="" className="page-temple-bg" />
+        <div className="page-vignette" />
+        <img src={GANPATI_CENTER} alt="" className="page-ganesha-center" />
+        <div className="page-diyas" aria-hidden="true" />
       </div>
 
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <div className="relative mx-auto mb-5 w-fit">
-            <div className="absolute -inset-3 rounded-full bg-brand-gold-400/15 blur-xl" />
+            <div className="absolute -inset-3 rounded-full bg-brand-saffron-400/20 blur-xl" />
             <img
               src={SHIVAJI_IMG}
               alt="Chhatrapati Shivaji Maharaj"
               className="logo-portrait relative mx-auto h-20 w-20"
             />
           </div>
-          <h1 className="brand-title text-3xl font-bold text-white">Shivaji Youth</h1>
-          <p className="mt-2 text-sm font-medium text-secondary">Complete your team account</p>
+          <h1 className="brand-title text-3xl font-bold text-temple-brown">Shivaji Youth</h1>
+          <p className="mt-2 text-sm font-medium text-temple-muted">Complete your team account</p>
         </div>
 
-        <div className="card card-fancy p-6 shadow-lift sm:p-8">
+        <div className="card p-6 shadow-lift sm:p-8">
           <div className="mb-6">
-            <h2 className="brand-title text-xl font-bold text-white">Welcome to the team!</h2>
-            <p className="mt-1 text-sm text-secondary">
-              You're signing in as <span className="font-semibold text-brand-gold-400">{email}</span>.
+            <h2 className="brand-title text-xl font-bold text-temple-brown">Welcome to the team!</h2>
+            <p className="mt-1 text-sm text-temple-muted">
+              You're signing in as <span className="font-semibold text-brand-saffron-700">{email}</span>.
               Choose your name and a password to finish setting up your account.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <label className="block text-sm font-medium text-secondary">
+            <label className="block text-sm font-medium text-temple-brown">
               Your name
               <input
                 value={name}
@@ -102,7 +103,7 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
                 className="input-field"
               />
             </label>
-            <label className="block text-sm font-medium text-secondary">
+            <label className="block text-sm font-medium text-temple-brown">
               Choose a password
               <input
                 type="password"
@@ -113,7 +114,7 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
                 className="input-field"
               />
             </label>
-            <label className="block text-sm font-medium text-secondary">
+            <label className="block text-sm font-medium text-temple-brown">
               Confirm password
               <input
                 type="password"
@@ -124,7 +125,7 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
                 className="input-field"
               />
             </label>
-            {error && <p className="text-sm text-maratha-outflow">{error}</p>}
+            {error && <p className="text-sm text-temple-outflow">{error}</p>}
             <button disabled={busy} className="btn-primary-lg">
               {busy ? 'Setting up...' : 'Complete setup'}
             </button>

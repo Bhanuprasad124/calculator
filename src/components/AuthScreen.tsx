@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { GANPATI_BG, SHIVAJI_IMG } from '@/lib/theme';
+import { GANPATI_CENTER, SHIVAJI_IMG, TEMPLE_BG } from '@/lib/theme';
 import { friendlyAuthError } from '@/lib/utils';
 
 type AuthMode = 'login' | 'signup';
@@ -76,40 +76,41 @@ export function AuthScreen() {
 
   return (
     <main className="relative flex min-h-screen items-center justify-center px-4 py-10 text-primary">
-      <div className="fixed inset-0 -z-10">
-        <div className="page-backdrop" />
-        <img src={GANPATI_BG} alt="" className="page-watermark" />
-        <div className="page-pattern" />
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <img src={TEMPLE_BG} alt="" className="page-temple-bg" />
+        <div className="page-vignette" />
+        <img src={GANPATI_CENTER} alt="" className="page-ganesha-center" />
+        <div className="page-diyas" aria-hidden="true" />
       </div>
 
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <div className="relative mx-auto mb-5 w-fit">
-            <div className="absolute -inset-3 rounded-full bg-brand-gold-400/15 blur-xl" />
+            <div className="absolute -inset-3 rounded-full bg-brand-saffron-400/20 blur-xl" />
             <img
               src={SHIVAJI_IMG}
               alt="Chhatrapati Shivaji Maharaj"
               className="logo-portrait relative mx-auto h-20 w-20"
             />
           </div>
-          <h1 className="brand-title text-3xl font-bold text-white sm:text-4xl">Shivaji Youth</h1>
-          <p className="mt-2 text-sm font-medium text-secondary">Shared cash ledger · Invite-only</p>
+          <h1 className="brand-title text-3xl font-bold text-temple-brown sm:text-4xl">Shivaji Youth</h1>
+          <p className="mt-2 text-sm font-medium text-temple-muted">Shared cash ledger · Invite-only</p>
           <div className="ornament-line mx-auto mt-4 max-w-[200px]">
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-brand-gold-400/80">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-brand-saffron-500/80">
               जय शिवराय
             </span>
           </div>
         </div>
 
-        <div className="card card-fancy p-6 shadow-lift sm:p-8">
-          <div className="mb-6 flex rounded-lg border border-brand-gold-400/20 bg-black/25 p-1">
+        <div className="card p-6 shadow-lift sm:p-8">
+          <div className="mb-6 flex rounded-full border border-white/60 bg-white/40 p-1">
             <button
               type="button"
               onClick={() => switchMode('login')}
-              className={`flex-1 rounded-md py-2.5 text-sm font-semibold transition ${
+              className={`flex-1 rounded-full py-2.5 text-sm font-semibold transition ${
                 mode === 'login'
-                  ? 'bg-brand-gold-400/20 text-white shadow-gold'
-                  : 'text-muted hover:text-secondary'
+                  ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-tab-active'
+                  : 'text-temple-tab hover:text-temple-brown'
               }`}
             >
               Sign in
@@ -117,10 +118,10 @@ export function AuthScreen() {
             <button
               type="button"
               onClick={() => switchMode('signup')}
-              className={`flex-1 rounded-md py-2.5 text-sm font-semibold transition ${
+              className={`flex-1 rounded-full py-2.5 text-sm font-semibold transition ${
                 mode === 'signup'
-                  ? 'bg-brand-gold-400/20 text-white shadow-gold'
-                  : 'text-muted hover:text-secondary'
+                  ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-tab-active'
+                  : 'text-temple-tab hover:text-temple-brown'
               }`}
             >
               Create account
@@ -128,10 +129,10 @@ export function AuthScreen() {
           </div>
 
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-white">
+            <h2 className="text-xl font-bold text-temple-brown">
               {mode === 'login' ? 'Welcome back' : 'Join the youth team'}
             </h2>
-            <p className="mt-1 text-sm text-secondary">
+            <p className="mt-1 text-sm text-temple-muted">
               {mode === 'login'
                 ? 'Sign in to view the team cash ledger.'
                 : 'You need a team invite to create an account. Enter the email your admin invited.'}
@@ -140,7 +141,7 @@ export function AuthScreen() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === 'signup' && (
-              <label className="block text-sm font-medium text-secondary">
+              <label className="block text-sm font-medium text-temple-brown">
                 Your name
                 <input
                   value={name}
@@ -150,7 +151,7 @@ export function AuthScreen() {
                 />
               </label>
             )}
-            <label className="block text-sm font-medium text-secondary">
+            <label className="block text-sm font-medium text-temple-brown">
               Email address
               <input
                 type="email"
@@ -161,7 +162,7 @@ export function AuthScreen() {
                 className="input-field"
               />
             </label>
-            <label className="block text-sm font-medium text-secondary">
+            <label className="block text-sm font-medium text-temple-brown">
               Password
               <input
                 type="password"
@@ -172,7 +173,7 @@ export function AuthScreen() {
                 className="input-field"
               />
             </label>
-            {error && <p className="text-sm text-maratha-outflow">{error}</p>}
+            {error && <p className="text-sm text-temple-outflow">{error}</p>}
             {notice && <p className="alert-success">{notice}</p>}
             <button disabled={busy} className="btn-primary-lg">
               {busy ? 'Please wait...' : mode === 'login' ? 'Sign in to ledger' : 'Create my account'}

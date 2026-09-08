@@ -1,6 +1,7 @@
 import type { FormEvent } from 'react';
-import { ChevronDown, Loader2, Lock, Plus, WalletCards } from 'lucide-react';
+import { ChevronDown, Loader2, Lock, Plus } from 'lucide-react';
 import type { TransactionType } from '@/lib/supabase';
+import { GANESHA_ICON } from '@/lib/theme';
 
 type EntryForm = {
   type: TransactionType;
@@ -22,11 +23,11 @@ export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError
     return (
       <section className="form-panel">
         <div className="mb-3 flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-brand-gold-400/25 bg-black/20 text-muted">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-temple-muted">
             <Lock className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="font-bold text-white">Record Cash Movement</h3>
+            <h3 className="font-bold text-temple-brown">Record Cash Movement</h3>
             <p className="text-xs text-muted">Only admins can add or remove entries</p>
           </div>
         </div>
@@ -40,18 +41,16 @@ export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError
   return (
     <section className="form-panel">
       <div className="mb-5 flex items-center gap-3">
-        <div className="icon-circle-saffron">
-          <WalletCards className="h-5 w-5" />
-        </div>
+        <img src={GANESHA_ICON} alt="" className="ganesha-badge" />
         <div>
-          <h3 className="font-bold text-white">Record Cash Movement</h3>
+          <h3 className="font-bold text-temple-brown">Record Cash Movement</h3>
           <p className="text-xs text-muted">Add a shared entry under your name</p>
         </div>
       </div>
 
       <form onSubmit={onSubmit}>
         <div className="grid gap-4 md:grid-cols-[1fr_1fr_2fr_auto] md:items-end">
-          <label className="text-sm font-semibold text-secondary">
+          <label className="text-sm font-semibold text-temple-brown">
             Type
             <div className="relative mt-1.5">
               <select
@@ -62,11 +61,11 @@ export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError
                 <option value="expense">Amount Spent (Out)</option>
                 <option value="income">Amount Received (In)</option>
               </select>
-              <ChevronDown className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-muted" />
+              <ChevronDown className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-temple-muted" />
             </div>
           </label>
 
-          <label className="text-sm font-semibold text-secondary">
+          <label className="text-sm font-semibold text-temple-brown">
             Amount (₹)
             <input
               type="number"
@@ -79,7 +78,7 @@ export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError
             />
           </label>
 
-          <label className="text-sm font-semibold text-secondary">
+          <label className="text-sm font-semibold text-temple-brown">
             Description
             <input
               value={entry.details}
@@ -89,13 +88,13 @@ export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError
             />
           </label>
 
-          <button disabled={submitting} className="btn-primary h-[42px]">
+          <button disabled={submitting} className="btn-primary h-[42px] rounded-full">
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
             {submitting ? 'Saving' : 'Save Entry'}
           </button>
         </div>
 
-        {formError && <p className="mt-3 text-sm text-maratha-outflow">{formError}</p>}
+        {formError && <p className="mt-3 text-sm text-temple-outflow">{formError}</p>}
       </form>
     </section>
   );
