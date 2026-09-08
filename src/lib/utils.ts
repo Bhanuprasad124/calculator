@@ -4,7 +4,8 @@ import type { Profile, TransactionType } from '@/lib/supabase';
 /** True when an email-invited user still needs to set their name and password. */
 export function invitedUserNeedsSetup(user: User, profile: Profile | null): boolean {
   const meta = user.user_metadata ?? {};
-  if (!meta.inviter_name) return false;
+  if (meta.setup_complete === true) return false;
+  if (!meta.inviter_name && meta.name?.trim()) return false;
   if (!profile?.display_name?.trim()) return true;
 
   const emailPrefix = user.email?.split('@')[0]?.toLowerCase() ?? '';

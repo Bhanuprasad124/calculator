@@ -42,7 +42,7 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
 
     const { error: authError } = await supabase.auth.updateUser({
       password,
-      data: { name: name.trim() },
+      data: { name: name.trim(), setup_complete: true },
     });
     if (authError) {
       setError(friendlySetupError(authError.message));
@@ -61,6 +61,7 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
     }
 
     await supabase.auth.refreshSession();
+    setBusy(false);
     onDone();
   };
 

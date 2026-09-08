@@ -79,7 +79,13 @@ export default function App() {
         invitedUserNeedsSetup(activeSession.user, (profileRes.data as Profile | null) ?? null),
       );
     } else {
-      setNeedsSetup(setupRes.data === true);
+      const profile = profileRes.data as Profile | null;
+      const emailPrefix = activeSession.user.email?.split('@')[0]?.toLowerCase() ?? '';
+      const hasRealProfile =
+        !!profile?.display_name?.trim() &&
+        profile.display_name.trim().toLowerCase() !== emailPrefix;
+      const setupComplete = activeSession.user.user_metadata?.setup_complete === true;
+      setNeedsSetup(setupRes.data === true && !hasRealProfile && !setupComplete);
     }
     setSetupChecked(true);
     setLoading(false);
@@ -107,9 +113,11 @@ export default function App() {
         void loadWorkspace(data.session);
       } else setLoading(false);
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, nextSession) => {
       setSession(nextSession);
       if (nextSession) {
+        // Avoid re-checking setup mid-flow when updateUser refreshes metadata.
+        if (event === 'USER_UPDATED' || event === 'TOKEN_REFRESHED') return;
         setTab('overview');
         void loadWorkspace(nextSession);
       } else {
