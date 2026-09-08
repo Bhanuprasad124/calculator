@@ -40,22 +40,23 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
 
     setBusy(true);
 
-    const { error: authError } = await supabase.auth.updateUser({
-      password,
-      data: { name: name.trim(), setup_complete: true },
+    const trimmedName = name.trim();
+
+    const { error: rpcError } = await supabase.rpc('complete_account_setup', {
+      p_name: trimmedName,
     });
-    if (authError) {
-      setError(friendlySetupError(authError.message));
+    if (rpcError) {
+      setError(friendlySetupError(rpcError.message));
       setBusy(false);
       return;
     }
 
-    const { error: rpcError } = await supabase.rpc('complete_account_setup', {
-      p_name: name.trim(),
+    const { error: authError } = await supabase.auth.updateUser({
+      password,
+      data: { name: trimmedName, setup_complete: true },
     });
-
-    if (rpcError) {
-      setError(friendlySetupError(rpcError.message));
+    if (authError) {
+      setError(friendlySetupError(authError.message));
       setBusy(false);
       return;
     }

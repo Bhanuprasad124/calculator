@@ -56,16 +56,20 @@ export function friendlySetupError(message: string): string {
   if (lower.includes('same_password') || lower.includes('different from the old')) {
     return 'Please choose a different password than your current one.';
   }
-  if (lower.includes('not authenticated') || lower.includes('jwt')) {
+  if (lower.includes('not authenticated') || lower.includes('jwt') || lower.includes('session')) {
     return 'Your session expired. Open the invite link from your email again.';
   }
   if (lower.includes('name is required')) {
     return 'Please enter your name so the team can identify your entries.';
   }
   if (lower.includes('function') && lower.includes('does not exist')) {
-    return 'Account setup is not configured yet. Ask your admin to run the latest database migration.';
+    return 'Database setup is missing. Ask your admin to run the latest Supabase migration in the SQL editor.';
   }
-  return 'Could not set up your account. Please try again.';
+  if (lower.includes('permission denied') || lower.includes('not authorized')) {
+    return 'Permission error during setup. Ask your admin to run reset_invited_user.sql in Supabase.';
+  }
+  // Show the real error so we can debug one-off issues
+  return message || 'Could not set up your account. Please try again.';
 }
 
 export function friendlyAuthError(message: string): string {
