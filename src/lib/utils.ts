@@ -1,4 +1,15 @@
-import type { TransactionType } from '@/lib/supabase';
+import type { User } from '@supabase/supabase-js';
+import type { Profile, TransactionType } from '@/lib/supabase';
+
+/** True when an email-invited user still needs to set their name and password. */
+export function invitedUserNeedsSetup(user: User, profile: Profile | null): boolean {
+  const meta = user.user_metadata ?? {};
+  if (!meta.inviter_name) return false;
+  if (!profile?.display_name?.trim()) return true;
+
+  const emailPrefix = user.email?.split('@')[0]?.toLowerCase() ?? '';
+  return profile.display_name.trim().toLowerCase() === emailPrefix;
+}
 
 export function formatCurrency(value: number): string {
   return new Intl.NumberFormat('en-IN', {

@@ -49,6 +49,7 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
       return;
     }
 
+    await supabase.auth.refreshSession();
     onDone();
   };
 

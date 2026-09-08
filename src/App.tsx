@@ -18,7 +18,7 @@ import {
   type Transaction,
   type TransactionType,
 } from '@/lib/supabase';
-import { formatCurrency, formatDateTime, getInitials } from '@/lib/utils';
+import { formatCurrency, formatDateTime, getInitials, invitedUserNeedsSetup } from '@/lib/utils';
 import { AuthScreen } from '@/components/AuthScreen';
 import { CompleteSetup } from '@/components/CompleteSetup';
 import { EntryFormCard } from '@/components/EntryFormCard';
@@ -74,9 +74,7 @@ export default function App() {
     else setTransactions((txRes.data ?? []) as Transaction[]);
 
     const prof = profileRes.data as Profile | null;
-    const invitedViaEmail = activeSession.user.user_metadata?.['inviter_name'] !== undefined;
-    const hasNoName = !prof || !prof.display_name || prof.display_name === activeSession.user.email;
-    setNeedsSetup(invitedViaEmail && hasNoName);
+    setNeedsSetup(invitedUserNeedsSetup(activeSession.user, prof));
     setSetupChecked(true);
     setLoading(false);
   }, []);
@@ -196,11 +194,7 @@ export default function App() {
 
   if (!session) return <AuthScreen />;
 
-  if (
-    needsSetup &&
-    session &&
-    (!profile || !profile.display_name || profile.display_name === session.user.email)
-  ) {
+  if (needsSetup && session) {
     return (
       <CompleteSetup
         email={session.user.email ?? ''}
