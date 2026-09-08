@@ -20,17 +20,17 @@ interface EntryFormProps {
 export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError, isAdmin }: EntryFormProps) {
   if (!isAdmin) {
     return (
-      <section className="card p-5 sm:p-6">
+      <section className="form-panel">
         <div className="mb-3 flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-stone-100 text-stone-400">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-brand-gold-400/25 bg-black/20 text-muted">
             <Lock className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="font-bold text-stone-900">Record Cash Movement</h3>
-            <p className="text-xs text-stone-500">Only admins can add or remove entries</p>
+            <h3 className="font-bold text-white">Record Cash Movement</h3>
+            <p className="text-xs text-muted">Only admins can add or remove entries</p>
           </div>
         </div>
-        <p className="rounded-lg bg-brand-saffron-50/60 px-4 py-3 text-sm text-stone-600 ring-1 ring-brand-saffron-100">
+        <p className="alert-info">
           You have read-only access. Ask an admin to record a cash entry on your behalf, or request admin access from the Members page.
         </p>
       </section>
@@ -38,20 +38,20 @@ export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError
   }
 
   return (
-    <section className="card card-fancy p-5 sm:p-6">
+    <section className="form-panel">
       <div className="mb-5 flex items-center gap-3">
-        <div className="icon-circle-saffron h-10 w-10">
+        <div className="icon-circle-saffron">
           <WalletCards className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="font-bold text-stone-900">Record Cash Movement</h3>
-          <p className="text-xs text-stone-500">Add a shared entry under your name</p>
+          <h3 className="font-bold text-white">Record Cash Movement</h3>
+          <p className="text-xs text-muted">Add a shared entry under your name</p>
         </div>
       </div>
 
       <form onSubmit={onSubmit}>
         <div className="grid gap-4 md:grid-cols-[1fr_1fr_2fr_auto] md:items-end">
-          <label className="text-sm font-semibold text-stone-700">
+          <label className="text-sm font-semibold text-secondary">
             Type
             <div className="relative mt-1.5">
               <select
@@ -62,11 +62,11 @@ export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError
                 <option value="expense">Amount Spent (Out)</option>
                 <option value="income">Amount Received (In)</option>
               </select>
-              <ChevronDown className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-stone-400" />
+              <ChevronDown className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-muted" />
             </div>
           </label>
 
-          <label className="text-sm font-semibold text-stone-700">
+          <label className="text-sm font-semibold text-secondary">
             Amount (₹)
             <input
               type="number"
@@ -79,7 +79,7 @@ export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError
             />
           </label>
 
-          <label className="text-sm font-semibold text-stone-700">
+          <label className="text-sm font-semibold text-secondary">
             Description
             <input
               value={entry.details}
@@ -95,7 +95,7 @@ export function EntryFormCard({ entry, setEntry, onSubmit, submitting, formError
           </button>
         </div>
 
-        {formError && <p className="mt-3 text-sm text-rose-600">{formError}</p>}
+        {formError && <p className="mt-3 text-sm text-maratha-outflow">{formError}</p>}
       </form>
     </section>
   );

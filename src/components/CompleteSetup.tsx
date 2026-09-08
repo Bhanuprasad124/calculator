@@ -62,38 +62,38 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
   };
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center px-4 py-10">
+    <main className="relative flex min-h-screen items-center justify-center px-4 py-10 text-primary">
       <div className="fixed inset-0 -z-10">
-        <img src={GANPATI_BG} alt="" className="h-full w-full object-cover" />
         <div className="page-backdrop" />
+        <img src={GANPATI_BG} alt="" className="page-watermark" />
         <div className="page-pattern" />
       </div>
 
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <div className="relative mx-auto mb-5 w-fit">
-            <div className="absolute -inset-3 rounded-full bg-brand-gold-400/25 blur-xl" />
+            <div className="absolute -inset-3 rounded-full bg-brand-gold-400/15 blur-xl" />
             <img
               src={SHIVAJI_IMG}
               alt="Chhatrapati Shivaji Maharaj"
-              className="logo-frame relative mx-auto h-20 w-20"
+              className="logo-portrait relative mx-auto h-20 w-20"
             />
           </div>
-          <h1 className="brand-title text-3xl font-bold text-brand-maroon-900">Shivaji Youth</h1>
-          <p className="mt-2 text-sm font-medium text-stone-500">Complete your team account</p>
+          <h1 className="brand-title text-3xl font-bold text-white">Shivaji Youth</h1>
+          <p className="mt-2 text-sm font-medium text-secondary">Complete your team account</p>
         </div>
 
         <div className="card card-fancy p-6 shadow-lift sm:p-8">
           <div className="mb-6">
-            <h2 className="brand-title text-xl font-bold text-brand-maroon-900">Welcome to the team!</h2>
-            <p className="mt-1 text-sm text-stone-500">
-              You're signing in as <span className="font-semibold text-brand-maroon-800">{email}</span>.
+            <h2 className="brand-title text-xl font-bold text-white">Welcome to the team!</h2>
+            <p className="mt-1 text-sm text-secondary">
+              You're signing in as <span className="font-semibold text-brand-gold-400">{email}</span>.
               Choose your name and a password to finish setting up your account.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <label className="block text-sm font-medium text-stone-700">
+            <label className="block text-sm font-medium text-secondary">
               Your name
               <input
                 value={name}
@@ -102,7 +102,7 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
                 className="input-field"
               />
             </label>
-            <label className="block text-sm font-medium text-stone-700">
+            <label className="block text-sm font-medium text-secondary">
               Choose a password
               <input
                 type="password"
@@ -113,7 +113,7 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
                 className="input-field"
               />
             </label>
-            <label className="block text-sm font-medium text-stone-700">
+            <label className="block text-sm font-medium text-secondary">
               Confirm password
               <input
                 type="password"
@@ -124,14 +124,14 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
                 className="input-field"
               />
             </label>
-            {error && <p className="text-sm text-rose-600">{error}</p>}
+            {error && <p className="text-sm text-maratha-outflow">{error}</p>}
             <button disabled={busy} className="btn-primary-lg">
               {busy ? 'Setting up...' : 'Complete setup'}
             </button>
           </form>
         </div>
 
-        <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-xs text-stone-400">
+        <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-xs text-muted">
           <ShieldCheck className="h-3.5 w-3.5" />
           Invite-only · Only approved team members can join
         </p>

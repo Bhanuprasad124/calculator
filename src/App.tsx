@@ -206,7 +206,7 @@ export default function App() {
 
   if (!setupChecked) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-stone-400">
+      <div className="flex min-h-screen items-center justify-center bg-maratha-gradient text-muted">
         Loading...
       </div>
     );
@@ -234,68 +234,77 @@ export default function App() {
   ];
 
   return (
-    <div className="relative min-h-screen text-stone-900">
+    <div className="relative min-h-screen text-primary">
       <div className="fixed inset-0 -z-10">
-        <img src={GANPATI_BG} alt="" className="h-full w-full object-cover" />
         <div className="page-backdrop" />
+        <img src={GANPATI_BG} alt="" className="page-watermark" />
         <div className="page-pattern" />
+        <div className="page-ornate-corner bottom-0 left-0 rotate-180" />
+        <div className="page-ornate-corner right-0 top-0" />
       </div>
 
       <div className="sticky top-0 z-30">
-        <div className="h-1.5 bg-gradient-to-r from-brand-saffron-500 via-brand-gold-400 to-brand-maroon-700" />
-
-        <header className="header-shell">
-        <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
-          <div className="flex items-center gap-3">
-            <img
-              src={SHIVAJI_IMG}
-              alt="Chhatrapati Shivaji Maharaj"
-              className="logo-frame h-11 w-11 sm:h-12 sm:w-12"
-            />
-            <div>
-              <h1 className="brand-title text-lg font-bold text-brand-maroon-900 sm:text-xl">Shivaji Youth</h1>
-              <p className="hidden text-xs font-medium text-stone-500 sm:block">Team cash movement ledger</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="hidden items-center gap-2 text-right sm:flex">
-              <div>
-                <p className="text-sm font-semibold text-stone-800">{memberName}</p>
-                <p className="flex items-center gap-1 text-xs text-stone-500">
-                  {isAdmin && <Crown className="h-3 w-3 text-brand-gold-500" />}
-                  {isAdmin ? 'Admin' : 'Member'}
-                </p>
+        <header className="royal-header">
+          <div className="mx-auto max-w-4xl px-3 pb-3 pt-2 sm:px-4">
+            <div className="royal-banner flex items-center justify-between gap-3 sm:gap-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <img
+                  src={SHIVAJI_IMG}
+                  alt="Chhatrapati Shivaji Maharaj"
+                  className="logo-portrait"
+                />
+                <div className="min-w-0">
+                  <h1 className="brand-title truncate text-base font-bold text-white sm:text-xl">
+                    Shivaji Youth
+                  </h1>
+                  <p className="truncate text-xs font-medium text-secondary sm:text-sm">
+                    Team cash movement ledger
+                  </p>
+                </div>
+              </div>
+              <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+                <div className="admin-pill">
+                  <div className="profile-avatar hidden sm:flex">
+                    {getInitials(memberName)}
+                  </div>
+                  <div className="text-right">
+                    <p className="max-w-[120px] truncate text-sm font-semibold text-white sm:max-w-[160px]">
+                      {memberName}
+                    </p>
+                    <p className="flex items-center justify-end gap-1 text-xs text-secondary">
+                      {isAdmin && <Crown className="h-3 w-3 text-brand-gold-400" />}
+                      {isAdmin ? 'Admin' : 'Member'}
+                    </p>
+                  </div>
+                </div>
+                <div className="profile-avatar sm:hidden">{getInitials(memberName)}</div>
+                <button
+                  type="button"
+                  onClick={() => void supabase.auth.signOut()}
+                  aria-label="Sign out"
+                  className="btn-ghost"
+                >
+                  <LogOut className="h-4 w-4" />
+                </button>
               </div>
             </div>
-            <div className="avatar-badge h-9 w-9">
-              {getInitials(memberName)}
-            </div>
-            <button
-              type="button"
-              onClick={() => void supabase.auth.signOut()}
-              aria-label="Sign out"
-              className="rounded-lg p-2 text-stone-400 transition hover:bg-brand-saffron-50 hover:text-brand-maroon-700"
-            >
-              <LogOut className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
 
-        <nav className="mx-auto max-w-4xl px-4 pb-3 sm:px-6">
-          <div className="flex gap-1.5 overflow-x-auto rounded-2xl bg-brand-saffron-50/50 p-1 ring-1 ring-brand-saffron-100/80">
-            {tabs.map(({ id, label, icon: Icon }) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setTab(id)}
-                className={tab === id ? 'tab-pill-active' : 'tab-pill-inactive'}
-              >
-                <Icon className="h-4 w-4" />
-                {label}
-              </button>
-            ))}
+            <nav className="mt-3">
+              <div className="tab-bar">
+                {tabs.map(({ id, label, icon: Icon }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => setTab(id)}
+                    className={tab === id ? 'tab-pill-active' : 'tab-pill-inactive'}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </nav>
           </div>
-        </nav>
         </header>
       </div>
 
@@ -306,56 +315,56 @@ export default function App() {
             <div className="flex items-end justify-between gap-4">
               <div>
                 <p className="section-eyebrow">Overview</p>
-                <h2 className="brand-title mt-2 text-2xl font-bold text-brand-maroon-900 sm:text-3xl">Team finances</h2>
+                <h2 className="brand-title mt-2 text-2xl font-bold text-white sm:text-3xl">Team finances</h2>
                 <div className="ornament-line mt-3 max-w-xs">
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand-saffron-400">जय शिवराय</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand-gold-400/80">
+                    जय शिवराय
+                  </span>
                 </div>
               </div>
-              <div className="hidden items-center gap-2 rounded-xl border border-orange-200/70 bg-gradient-to-br from-white to-brand-saffron-50/50 px-4 py-2.5 text-sm font-medium text-stone-600 shadow-sm sm:flex">
-                <Users className="h-4 w-4" />
+              <div className="hidden items-center gap-2 rounded-xl border border-brand-gold-400/30 bg-white/5 px-4 py-2.5 text-sm font-medium text-secondary shadow-gold sm:flex">
+                <Users className="h-4 w-4 text-brand-gold-400" />
                 {profiles.length || 1} member{profiles.length === 1 ? '' : 's'}
               </div>
             </div>
 
             <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="stat-card border-l-4 border-l-emerald-500">
-                <div className="stat-card-body bg-gradient-to-br from-emerald-50/80 via-white to-white after:bg-emerald-400">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Total In</p>
-                      <p className="mt-2 text-2xl font-bold tabular-nums text-emerald-700">{formatCurrency(totalIncome)}</p>
-                    </div>
-                    <div className="icon-circle-emerald h-10 w-10">
-                      <ArrowDownToLine className="h-5 w-5" />
-                    </div>
+              <div className="glass-stat">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="glass-stat-label">Total In</p>
+                    <p className="glass-stat-value-in">{formatCurrency(totalIncome)}</p>
+                  </div>
+                  <div className="stat-icon-in">
+                    <ArrowDownToLine className="h-5 w-5" />
                   </div>
                 </div>
               </div>
-              <div className="stat-card border-l-4 border-l-rose-500">
-                <div className="stat-card-body bg-gradient-to-br from-rose-50/80 via-white to-white after:bg-rose-400">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Total Out</p>
-                      <p className="mt-2 text-2xl font-bold tabular-nums text-rose-700">{formatCurrency(totalExpense)}</p>
-                    </div>
-                    <div className="icon-circle-rose h-10 w-10">
-                      <ArrowUpFromLine className="h-5 w-5" />
-                    </div>
+              <div className="glass-stat">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="glass-stat-label">Total Out</p>
+                    <p className="glass-stat-value-out">{formatCurrency(totalExpense)}</p>
+                  </div>
+                  <div className="stat-icon-out">
+                    <ArrowUpFromLine className="h-5 w-5" />
                   </div>
                 </div>
               </div>
-              <div className="stat-card border-l-4 border-l-brand-saffron-500">
-                <div className="stat-card-body bg-gradient-to-br from-brand-saffron-50/90 via-white to-white after:bg-brand-saffron-400">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-stone-500">Net Balance</p>
-                      <p className={`mt-2 text-2xl font-bold tabular-nums ${balance >= 0 ? 'text-brand-saffron-700' : 'text-rose-700'}`}>
-                        {formatCurrency(balance)}
-                      </p>
-                    </div>
-                    <div className="icon-circle-saffron h-10 w-10">
-                      <LayoutGrid className="h-5 w-5" />
-                    </div>
+              <div className="glass-stat">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="glass-stat-label">Net Balance</p>
+                    <p
+                      className={
+                        balance >= 0 ? 'glass-stat-value-balance' : 'glass-stat-value-balance-negative'
+                      }
+                    >
+                      {formatCurrency(balance)}
+                    </p>
+                  </div>
+                  <div className="stat-icon-balance">
+                    <LayoutGrid className="h-5 w-5" />
                   </div>
                 </div>
               </div>
@@ -371,16 +380,16 @@ export default function App() {
             />
 
             <section className="card overflow-hidden">
-              <div className="flex items-center justify-between border-b border-orange-100 px-5 py-4">
+              <div className="flex items-center justify-between border-b border-brand-gold-400/20 px-5 py-4">
                 <div>
-                  <h3 className="font-bold text-stone-900">Recent Transactions</h3>
-                  <p className="mt-0.5 text-xs text-stone-500">Latest 5 entries</p>
+                  <h3 className="font-bold text-white">Recent Transactions</h3>
+                  <p className="mt-0.5 text-xs text-muted">Latest 5 entries</p>
                 </div>
                 {transactions.length > 5 && (
                   <button
                     type="button"
                     onClick={() => setTab('transactions')}
-                    className="text-sm font-semibold text-brand-saffron-700 transition hover:text-brand-saffron-800"
+                    className="text-sm font-semibold text-brand-gold-400 transition hover:text-brand-gold-300"
                   >
                     View all
                   </button>
@@ -404,8 +413,8 @@ export default function App() {
           <div className="space-y-6">
             <div>
               <p className="section-eyebrow">Transactions</p>
-              <h2 className="brand-title mt-2 text-2xl font-bold text-brand-maroon-900 sm:text-3xl">All team activity</h2>
-              <p className="mt-1 text-sm text-stone-500">Every entry recorded by the team, newest first.</p>
+              <h2 className="brand-title mt-2 text-2xl font-bold text-white sm:text-3xl">All team activity</h2>
+              <p className="mt-1 text-sm text-secondary">Every entry recorded by the team, newest first.</p>
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -422,11 +431,7 @@ export default function App() {
                     key={f}
                     type="button"
                     onClick={() => setFilter(f)}
-                    className={`rounded-lg border px-4 py-2.5 text-sm font-semibold transition ${
-                      filter === f
-                        ? 'border-brand-saffron-600 bg-brand-saffron-600 text-white shadow-sm shadow-brand-saffron-600/20'
-                        : 'border-orange-200 bg-white text-stone-600 hover:border-brand-saffron-300 hover:text-brand-maroon-800'
-                    }`}
+                    className={filter === f ? 'filter-pill-active' : 'filter-pill-inactive'}
                   >
                     {f === 'all' ? 'All' : f === 'income' ? 'Received' : 'Spent'}
                   </button>
@@ -452,54 +457,64 @@ export default function App() {
           <div className="space-y-6">
             <div>
               <p className="section-eyebrow">Audit Trail</p>
-              <h2 className="brand-title mt-2 text-2xl font-bold text-brand-maroon-900 sm:text-3xl">Deletion log</h2>
-              <p className="mt-1 text-sm text-stone-500">
+              <h2 className="brand-title mt-2 text-2xl font-bold text-white sm:text-3xl">Deletion log</h2>
+              <p className="mt-1 text-sm text-secondary">
                 Every deleted entry is recorded here with who removed it and when. This log cannot be edited or erased by team members.
               </p>
             </div>
 
             <section className="card overflow-hidden">
-              <div className="border-b border-orange-100 px-5 py-4">
-                <h3 className="font-bold text-stone-900">Deleted Entries</h3>
-                <p className="mt-0.5 text-xs text-stone-500">{auditLog.length} deletion{auditLog.length === 1 ? '' : 's'} recorded</p>
+              <div className="border-b border-brand-gold-400/20 px-5 py-4">
+                <h3 className="font-bold text-white">Deleted Entries</h3>
+                <p className="mt-0.5 text-xs text-muted">
+                  {auditLog.length} deletion{auditLog.length === 1 ? '' : 's'} recorded
+                </p>
               </div>
 
               {auditLoading ? (
-                <div className="py-12 text-center text-sm text-slate-400">Loading audit trail...</div>
+                <div className="py-12 text-center text-sm text-muted">Loading audit trail...</div>
               ) : auditError ? (
-                <p className="py-12 text-center text-sm text-rose-600">{auditError}</p>
+                <p className="py-12 text-center text-sm text-maratha-outflow">{auditError}</p>
               ) : auditLog.length === 0 ? (
-                <div className="py-12 text-center text-sm text-slate-400">
+                <div className="py-12 text-center text-sm text-muted">
                   No deletions recorded. When someone removes an entry, it will appear here.
                 </div>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="w-full min-w-[760px] text-left text-sm">
-                    <thead className="bg-slate-50 text-[11px] uppercase tracking-wider text-slate-500">
+                  <table className="table-shell w-full min-w-[760px] text-left text-sm">
+                    <thead>
                       <tr>
-                        <th className="px-5 py-3 font-bold">Deleted At</th>
-                        <th className="px-5 py-3 font-bold">Description</th>
-                        <th className="px-5 py-3 font-bold">Amount</th>
-                        <th className="px-5 py-3 font-bold">Originally By</th>
-                        <th className="px-5 py-3 font-bold">Deleted By</th>
+                        <th>Deleted At</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Originally By</th>
+                        <th>Deleted By</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody>
                       {auditLog.map((entry) => (
-                        <tr key={entry.id} className="transition hover:bg-rose-50/40">
-                          <td className="whitespace-nowrap px-5 py-4 text-slate-500">{formatDateTime(entry.deleted_at)}</td>
-                          <td className="max-w-[220px] px-5 py-4 font-semibold text-slate-800">{entry.transaction_details}</td>
-                          <td className={`px-5 py-4 font-bold tabular-nums ${entry.transaction_type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                        <tr key={entry.id}>
+                          <td className="whitespace-nowrap text-muted">{formatDateTime(entry.deleted_at)}</td>
+                          <td className="max-w-[220px] font-semibold text-white">{entry.transaction_details}</td>
+                          <td
+                            className={`font-bold tabular-nums ${
+                              entry.transaction_type === 'income' ? 'text-maratha-inflow' : 'text-maratha-outflow'
+                            }`}
+                          >
                             {formatCurrency(Number(entry.transaction_amount))}
                           </td>
-                          <td className="px-5 py-4">
+                          <td>
                             <span className="member-chip">
-                              {entry.original_created_by ? profileNames.get(entry.original_created_by) || 'Team member' : 'Earlier entry'}
+                              {entry.original_created_by
+                                ? profileNames.get(entry.original_created_by) || 'Team member'
+                                : 'Earlier entry'}
                             </span>
                           </td>
-                          <td className="px-5 py-4">
-                            <span className="inline-flex items-center rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-600">
-                              {entry.deleted_by ? profileNames.get(entry.deleted_by) || 'Team member' : 'Unknown'}
+                          <td>
+                            <span className="inline-flex items-center rounded-full bg-maratha-outflow/15 px-2.5 py-1 text-xs font-semibold text-maratha-outflow ring-1 ring-maratha-outflow/25">
+                              {entry.deleted_by
+                                ? profileNames.get(entry.deleted_by) || 'Team member'
+                                : 'Unknown'}
                             </span>
                           </td>
                         </tr>
@@ -524,7 +539,7 @@ export default function App() {
           />
         )}
 
-        <p className="mt-8 text-center text-xs text-stone-400">
+        <p className="mt-8 text-center text-xs text-muted">
           Shared with the Shivaji Youth team · Entries are saved automatically
         </p>
       </main>
