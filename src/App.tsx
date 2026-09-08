@@ -60,11 +60,12 @@ export default function App() {
   const loadWorkspace = useCallback(async (activeSession: Session) => {
     setLoading(true);
     setSetupChecked(false);
-    const [profileRes, profilesRes, txRes, invitesRes] = await Promise.all([
+    const [profileRes, profilesRes, txRes, invitesRes, setupRes] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', activeSession.user.id).maybeSingle(),
       supabase.from('profiles').select('*').order('display_name'),
       supabase.from('transactions').select('*').order('created_at', { ascending: false }),
       supabase.from('invites').select('*').order('created_at', { ascending: false }),
+      supabase.rpc('user_needs_account_setup'),
     ]);
 
     if (profileRes.data) setProfile(profileRes.data as Profile);
@@ -73,8 +74,13 @@ export default function App() {
     if (txRes.error) setError('Could not load the team ledger. Please refresh and try again.');
     else setTransactions((txRes.data ?? []) as Transaction[]);
 
-    const prof = profileRes.data as Profile | null;
-    setNeedsSetup(invitedUserNeedsSetup(activeSession.user, prof));
+    if (setupRes.error) {
+      setNeedsSetup(
+        invitedUserNeedsSetup(activeSession.user, (profileRes.data as Profile | null) ?? null),
+      );
+    } else {
+      setNeedsSetup(setupRes.data === true);
+    }
     setSetupChecked(true);
     setLoading(false);
   }, []);
@@ -194,7 +200,15 @@ export default function App() {
 
   if (!session) return <AuthScreen />;
 
-  if (needsSetup && session) {
+  if (!setupChecked) {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-slate-400">
+        Loading...
+      </div>
+    );
+  }
+
+  if (needsSetup) {
     return (
       <CompleteSetup
         email={session.user.email ?? ''}
@@ -203,14 +217,6 @@ export default function App() {
           if (session) void loadWorkspace(session);
         }}
       />
-    );
-  }
-
-  if (!setupChecked) {
-    return (
-      <div className="flex min-h-screen items-center justify-center text-slate-400">
-        Loading...
-      </div>
     );
   }
 
