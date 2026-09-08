@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { friendlySetupError } from '@/lib/utils';
 
 interface CompleteSetupProps {
   email: string;
@@ -38,13 +39,23 @@ export function CompleteSetup({ email, onDone }: CompleteSetupProps) {
     }
 
     setBusy(true);
+
+    const { error: authError } = await supabase.auth.updateUser({
+      password,
+      data: { name: name.trim() },
+    });
+    if (authError) {
+      setError(friendlySetupError(authError.message));
+      setBusy(false);
+      return;
+    }
+
     const { error: rpcError } = await supabase.rpc('complete_account_setup', {
       p_name: name.trim(),
-      p_password: password,
     });
 
     if (rpcError) {
-      setError('Could not set up your account. Please try again.');
+      setError(friendlySetupError(rpcError.message));
       setBusy(false);
       return;
     }

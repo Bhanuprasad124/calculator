@@ -47,6 +47,26 @@ export function getInitials(name: string): string {
     .toUpperCase();
 }
 
+export function friendlySetupError(message: string): string {
+  const lower = message.toLowerCase();
+  if (lower.includes('password should be at least') || lower.includes('at least 6')) {
+    return 'Your password must be at least 6 characters.';
+  }
+  if (lower.includes('same_password') || lower.includes('different from the old')) {
+    return 'Please choose a different password than your current one.';
+  }
+  if (lower.includes('not authenticated') || lower.includes('jwt')) {
+    return 'Your session expired. Open the invite link from your email again.';
+  }
+  if (lower.includes('name is required')) {
+    return 'Please enter your name so the team can identify your entries.';
+  }
+  if (lower.includes('function') && lower.includes('does not exist')) {
+    return 'Account setup is not configured yet. Ask your admin to run the latest database migration.';
+  }
+  return 'Could not set up your account. Please try again.';
+}
+
 export function friendlyAuthError(message: string): string {
   const lower = message.toLowerCase();
   if (lower.includes('invalid login')) return 'The email or password is incorrect.';
