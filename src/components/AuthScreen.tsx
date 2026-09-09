@@ -37,10 +37,22 @@ export function AuthScreen() {
 
     setBusy(true);
     if (mode === 'signup') {
-      const { data: isInvited } = await supabase.rpc('is_email_invited', {
-        p_email: email.trim().toLowerCase(),
-      });
-      if (!isInvited) {
+      const normalizedEmail = email.trim().toLowerCase();
+      const [inviteRes, bootstrapRes] = await Promise.all([
+        supabase.rpc('is_email_invited', { p_email: normalizedEmail }),
+        supabase.rpc('is_bootstrap_signup_allowed'),
+      ]);
+
+      if (inviteRes.error || bootstrapRes.error) {
+        setError(
+          'The database is not set up yet. Run the migrations in Supabase SQL Editor (see supabase/scripts/FULL_NEW_PROJECT_SETUP.sql), then try again.',
+        );
+        setBusy(false);
+        return;
+      }
+
+      const canSignUp = inviteRes.data === true || bootstrapRes.data === true;
+      if (!canSignUp) {
         setError('This email has not been invited. Ask a team admin to invite you first.');
         setBusy(false);
         return;

@@ -19,6 +19,9 @@ async function bootstrap() {
     return;
   }
 
+  const { reconcileSupabaseProject } = await import('./lib/projectSession.ts');
+  await reconcileSupabaseProject();
+
   const { default: App } = await import('./App.tsx');
   root.render(
     <StrictMode>
